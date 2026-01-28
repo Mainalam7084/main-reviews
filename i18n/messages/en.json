@@ -1,0 +1,88 @@
+{
+    "common": {
+        "appName": "MainReviews",
+        "loading": "Loading...",
+        "error": "Error",
+        "save": "Save",
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "edit": "Edit",
+        "search": "Search",
+        "filter": "Filter",
+        "sort": "Sort"
+    },
+    "nav": {
+        "home": "Home",
+        "search": "Search",
+        "myReviews": "My Reviews",
+        "settings": "Settings"
+    },
+    "auth": {
+        "login": "Login",
+        "register": "Register",
+        "logout": "Logout",
+        "email": "Email",
+        "password": "Password",
+        "name": "Name",
+        "signIn": "Sign In",
+        "signUp": "Sign Up",
+        "noAccount": "Don't have an account?",
+        "haveAccount": "Already have an account?",
+        "continueWithoutLogin": "Continue without login"
+    },
+    "home": {
+        "trending": "Trending",
+        "topRated": "Top Rated",
+        "upcoming": "Upcoming",
+        "searchPlaceholder": "Search for movies..."
+    },
+    "review": {
+        "addReview": "Add Review",
+        "editReview": "Edit Review",
+        "ratingStars": "Rating",
+        "verdict": "Verdict",
+        "pros": "What's Good",
+        "cons": "What's Bad",
+        "reviewText": "Your Review",
+        "movieInfo": "Movie Information",
+        "title": "Title",
+        "year": "Year",
+        "genres": "Genres",
+        "runtime": "Runtime",
+        "director": "Director",
+        "actors": "Actors",
+        "overview": "Overview"
+    },
+    "verdict": {
+        "NEVER_WATCH": "Never Watch",
+        "WATCH": "Watch",
+        "RECOMMEND": "Recommended",
+        "STRONGLY_RECOMMEND": "Highly Recommended",
+        "BEST_EVER": "Best Ever"
+    },
+    "settings": {
+        "title": "Settings",
+        "theme": "Theme",
+        "language": "Language",
+        "storageMode": "Storage Mode",
+        "local": "Local",
+        "cloud": "Cloud",
+        "exportReviews": "Export Reviews",
+        "importReviews": "Import Reviews",
+        "importLocalToCloud": "Import Local Reviews to Cloud",
+        "dark": "Dark",
+        "light": "Light",
+        "system": "System"
+    },
+    "filters": {
+        "sortBy": "Sort By",
+        "newest": "Newest",
+        "oldest": "Oldest",
+        "highestRated": "Highest Rated",
+        "lowestRated": "Lowest Rated",
+        "filterByVerdict": "Filter by Verdict",
+        "filterByStars": "Filter by Stars",
+        "filterByYear": "Filter by Year",
+        "all": "All"
+    }
+}
