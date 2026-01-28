@@ -1,0 +1,88 @@
+{
+    "common": {
+        "appName": "MainReviews",
+        "loading": "Cargando...",
+        "error": "Error",
+        "save": "Guardar",
+        "cancel": "Cancelar",
+        "delete": "Eliminar",
+        "edit": "Editar",
+        "search": "Buscar",
+        "filter": "Filtrar",
+        "sort": "Ordenar"
+    },
+    "nav": {
+        "home": "Inicio",
+        "search": "Buscar",
+        "myReviews": "Mis Reseñas",
+        "settings": "Configuración"
+    },
+    "auth": {
+        "login": "Iniciar Sesión",
+        "register": "Registrarse",
+        "logout": "Cerrar Sesión",
+        "email": "Correo Electrónico",
+        "password": "Contraseña",
+        "name": "Nombre",
+        "signIn": "Entrar",
+        "signUp": "Registrarse",
+        "noAccount": "¿No tienes cuenta?",
+        "haveAccount": "¿Ya tienes cuenta?",
+        "continueWithoutLogin": "Continuar sin iniciar sesión"
+    },
+    "home": {
+        "trending": "Tendencias",
+        "topRated": "Mejor Valoradas",
+        "upcoming": "Próximamente",
+        "searchPlaceholder": "Buscar películas..."
+    },
+    "review": {
+        "addReview": "Añadir Reseña",
+        "editReview": "Editar Reseña",
+        "ratingStars": "Calificación",
+        "verdict": "Veredicto",
+        "pros": "Lo Bueno",
+        "cons": "Lo Malo",
+        "reviewText": "Tu Reseña",
+        "movieInfo": "Información de la Película",
+        "title": "Título",
+        "year": "Año",
+        "genres": "Géneros",
+        "runtime": "Duración",
+        "director": "Director",
+        "actors": "Actores",
+        "overview": "Sinopsis"
+    },
+    "verdict": {
+        "NEVER_WATCH": "Nunca la voy a ver",
+        "WATCH": "Ver",
+        "RECOMMEND": "Recomendable",
+        "STRONGLY_RECOMMEND": "Muy Recomendable",
+        "BEST_EVER": "La Mejor Peli que he Visto"
+    },
+    "settings": {
+        "title": "Configuración",
+        "theme": "Tema",
+        "language": "Idioma",
+        "storageMode": "Modo de Almacenamiento",
+        "local": "Local",
+        "cloud": "Nube",
+        "exportReviews": "Exportar Reseñas",
+        "importReviews": "Importar Reseñas",
+        "importLocalToCloud": "Importar Reseñas Locales a la Nube",
+        "dark": "Oscuro",
+        "light": "Claro",
+        "system": "Sistema"
+    },
+    "filters": {
+        "sortBy": "Ordenar Por",
+        "newest": "Más Recientes",
+        "oldest": "Más Antiguos",
+        "highestRated": "Mejor Calificadas",
+        "lowestRated": "Peor Calificadas",
+        "filterByVerdict": "Filtrar por Veredicto",
+        "filterByStars": "Filtrar por Estrellas",
+        "filterByYear": "Filtrar por Año",
+        "all": "Todas"
+    }
+}
