@@ -12,7 +12,16 @@ const registerSchema = z.object({
 export async function POST(req: Request) {
     try {
         const body = await req.json();
-        const { email, password, name } = registerSchema.parse(body);
+        const parsed = registerSchema.safeParse(body);
+
+        if (!parsed.success) {
+            return NextResponse.json(
+                { message: 'Invalid input', errors: parsed.error.issues },
+                { status: 400 }
+            );
+        }
+
+        const { email, password, name } = parsed.data;
 
         const existingUser = await prisma.user.findUnique({
             where: { email },
@@ -43,12 +52,6 @@ export async function POST(req: Request) {
             { status: 201 }
         );
     } catch (error) {
-        if (error instanceof ZodError) {
-            return NextResponse.json(
-                { message: 'Invalid input', errors: error.errors },
-                { status: 400 }
-            );
-        }
         return NextResponse.json(
             { message: 'Something went wrong' },
             { status: 500 }

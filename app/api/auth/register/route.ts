@@ -12,7 +12,16 @@ const RegisterSchema = z.object({
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
-        const { name, email, password } = RegisterSchema.parse(body);
+        const parsed = RegisterSchema.safeParse(body);
+
+        if (!parsed.success) {
+            return NextResponse.json(
+                { message: 'Invalid input', errors: parsed.error.issues },
+                { status: 400 }
+            );
+        }
+
+        const { name, email, password } = parsed.data;
 
         // Check if user already exists
         const existingUser = await prisma.user.findUnique({
@@ -21,7 +30,7 @@ export async function POST(request: NextRequest) {
 
         if (existingUser) {
             return NextResponse.json(
-                { error: 'User already exists' },
+                { message: 'User already exists' },
                 { status: 400 }
             );
         }
@@ -49,16 +58,9 @@ export async function POST(request: NextRequest) {
             { status: 201 }
         );
     } catch (error) {
-        if (error instanceof ZodError) {
-            return NextResponse.json(
-                { error: 'Invalid request data', details: error.issues },
-                { status: 400 }
-            );
-        }
-
         console.error('Registration error:', error);
         return NextResponse.json(
-            { error: 'Failed to create user' },
+            { message: 'Failed to create user' },
             { status: 500 }
         );
     }

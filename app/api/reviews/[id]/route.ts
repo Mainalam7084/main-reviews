@@ -77,7 +77,16 @@ export async function PATCH(
         }
 
         const body = await request.json();
-        const validatedData = ReviewUpdateSchema.parse(body);
+        const parsed = ReviewUpdateSchema.safeParse(body);
+
+        if (!parsed.success) {
+            return NextResponse.json(
+                { message: 'Invalid input', errors: parsed.error.issues },
+                { status: 400 }
+            );
+        }
+
+        const validatedData = parsed.data;
 
         const review = await prisma.review.updateMany({
             where: {
@@ -100,13 +109,6 @@ export async function PATCH(
 
         return NextResponse.json(updatedReview);
     } catch (error) {
-        if (error instanceof ZodError) {
-            return NextResponse.json(
-                { error: 'Invalid request data', details: error.issues },
-                { status: 400 }
-            );
-        }
-
         console.error('Update review error:', error);
         return NextResponse.json(
             { error: 'Failed to update review' },

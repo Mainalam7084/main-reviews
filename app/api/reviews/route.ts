@@ -23,7 +23,16 @@ export async function POST(req: Request) {
 
     try {
         const body = await req.json();
-        const data = reviewSchema.parse(body);
+        const parsed = reviewSchema.safeParse(body);
+
+        if (!parsed.success) {
+            return NextResponse.json(
+                { message: 'Invalid input', errors: parsed.error.issues },
+                { status: 400 }
+            );
+        }
+
+        const data = parsed.data;
 
         const review = await prisma.review.create({
             data: {
@@ -34,10 +43,10 @@ export async function POST(req: Request) {
                 poster: data.moviePoster,
                 year: data.movieYear,
                 ratingStars: data.rating,
-                verdict: data.verdict,
+                verdict: data.verdict as any,
                 reviewText: data.text,
-                genres: '[]', // Default empty array for SQLite compat
-                actors: '[]', // Default empty array for SQLite compat
+                genres: '[]' as any, // Default empty array for SQLite compat
+                actors: '[]' as any, // Default empty array for SQLite compat
             },
         });
 
