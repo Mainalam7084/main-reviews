@@ -4,7 +4,8 @@ import { prisma } from '@/lib/prisma';
 import { Navbar } from '@/components/layout/navbar';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Star, redirect } from 'lucide-react';
+import { Star } from 'lucide-react';
+import { redirect } from 'next/navigation';
 import { getImageUrl } from '@/lib/tmdb';
 
 export default async function ReviewsPage() {
@@ -52,7 +53,7 @@ export default async function ReviewsPage() {
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {reviews.map((review) => (
+                        {reviews.map((review: any) => (
                             <div key={review.id} className="bg-zinc-900 rounded-lg overflow-hidden border border-zinc-800 flex flex-col">
                                 <div className="flex gap-4 p-4">
                                     <div className="shrink-0 w-24 aspect-[2/3] bg-zinc-800 rounded overflow-hidden relative">

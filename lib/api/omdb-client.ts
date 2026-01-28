@@ -121,10 +121,9 @@ class OMDBClient {
     }
 }
 
+import { env } from '@/lib/env';
+
 export const createOMDBClient = (apiKey?: string) => {
-    const key = apiKey || process.env.OMDB_API_KEY;
-    if (!key) {
-        throw new Error('OMDb API key is required');
-    }
+    const key = apiKey || env.OMDB_API_KEY;
     return new OMDBClient(key);
 };

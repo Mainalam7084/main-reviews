@@ -121,10 +121,9 @@ class TMDBClient {
     }
 }
 
+import { env } from '@/lib/env';
+
 export const createTMDBClient = (apiKey?: string) => {
-    const key = apiKey || process.env.TMDB_API_KEY;
-    if (!key) {
-        throw new Error('TMDB API key is required');
-    }
+    const key = apiKey || env.TMDB_API_KEY;
     return new TMDBClient(key);
 };

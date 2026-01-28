@@ -1,6 +1,6 @@
 import { withAuth } from "next-auth/middleware";
 
-export default withAuth({});
+export const proxy = withAuth({});
 
 export const config = {
     // Protects all routes under /protected/ and /admin/

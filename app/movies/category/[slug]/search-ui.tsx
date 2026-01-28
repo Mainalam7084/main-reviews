@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getImageUrl, type Movie } from '@/lib/tmdb';
-import { searchMovies } from '../../actions';
+import { searchMovies } from '@/app/movies/actions';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export function CategorySearch({

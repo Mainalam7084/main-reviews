@@ -1,3 +1,5 @@
+import { env } from './env';
+
 const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
 const TMDB_IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
@@ -26,7 +28,7 @@ export const getImageUrl = (path: string | null) => {
 export const searchMovies = async (query: string): Promise<Movie[]> => {
     if (!query) return [];
     const res = await fetch(
-        `${TMDB_BASE_URL}/search/movie?api_key=${process.env.TMDB_API_KEY}&query=${encodeURIComponent(
+        `${TMDB_BASE_URL}/search/movie?api_key=${env.TMDB_API_KEY}&query=${encodeURIComponent(
             query
         )}`
     );
@@ -37,7 +39,7 @@ export const searchMovies = async (query: string): Promise<Movie[]> => {
 
 export const getTrendingMovies = async (): Promise<Movie[]> => {
     const res = await fetch(
-        `${TMDB_BASE_URL}/trending/movie/week?api_key=${process.env.TMDB_API_KEY}`
+        `${TMDB_BASE_URL}/trending/movie/week?api_key=${env.TMDB_API_KEY}`
     );
     if (!res.ok) throw new Error('Failed to fetch trending movies');
     const data: TmdbSearchResponse = await res.json();
@@ -46,7 +48,7 @@ export const getTrendingMovies = async (): Promise<Movie[]> => {
 
 export const getTopRatedMovies = async (): Promise<Movie[]> => {
     const res = await fetch(
-        `${TMDB_BASE_URL}/movie/top_rated?api_key=${process.env.TMDB_API_KEY}&page=1`
+        `${TMDB_BASE_URL}/movie/top_rated?api_key=${env.TMDB_API_KEY}&page=1`
     );
     if (!res.ok) throw new Error('Failed to fetch top rated movies');
     const data: TmdbSearchResponse = await res.json();
@@ -55,7 +57,7 @@ export const getTopRatedMovies = async (): Promise<Movie[]> => {
 
 export const getUpcomingMovies = async (): Promise<Movie[]> => {
     const res = await fetch(
-        `${TMDB_BASE_URL}/movie/upcoming?api_key=${process.env.TMDB_API_KEY}&page=1`
+        `${TMDB_BASE_URL}/movie/upcoming?api_key=${env.TMDB_API_KEY}&page=1`
     );
     if (!res.ok) throw new Error('Failed to fetch upcoming movies');
     const data: TmdbSearchResponse = await res.json();
@@ -64,7 +66,7 @@ export const getUpcomingMovies = async (): Promise<Movie[]> => {
 
 export const getMoviesByCountry = async (countryCode: string): Promise<Movie[]> => {
     const res = await fetch(
-        `${TMDB_BASE_URL}/discover/movie?api_key=${process.env.TMDB_API_KEY}&with_origin_country=${countryCode}&sort_by=popularity.desc`
+        `${TMDB_BASE_URL}/discover/movie?api_key=${env.TMDB_API_KEY}&with_origin_country=${countryCode}&sort_by=popularity.desc`
     );
     if (!res.ok) throw new Error('Failed to fetch movies by country');
     const data: TmdbSearchResponse = await res.json();
@@ -80,7 +82,7 @@ export const searchMoviesWithFilter = async (query: string, language?: string): 
     // However, for strict filtering, we rely on post-filtering.
 
     const res = await fetch(
-        `${TMDB_BASE_URL}/search/movie?api_key=${process.env.TMDB_API_KEY}&query=${encodeURIComponent(query)}&page=1`
+        `${TMDB_BASE_URL}/search/movie?api_key=${env.TMDB_API_KEY}&query=${encodeURIComponent(query)}&page=1`
     );
 
     if (!res.ok) throw new Error('Failed to search movies');
@@ -128,7 +130,7 @@ export const getMoviesByCategory = async (slug: string): Promise<Movie[]> => {
 
 export const getMoviesByLanguage = async (languageCode: string): Promise<Movie[]> => {
     const res = await fetch(
-        `${TMDB_BASE_URL}/discover/movie?api_key=${process.env.TMDB_API_KEY}&with_original_language=${languageCode}&sort_by=popularity.desc&vote_count.gte=10`
+        `${TMDB_BASE_URL}/discover/movie?api_key=${env.TMDB_API_KEY}&with_original_language=${languageCode}&sort_by=popularity.desc&vote_count.gte=10`
     );
     if (!res.ok) throw new Error('Failed to fetch movies by language');
     const data: TmdbSearchResponse = await res.json();
@@ -137,7 +139,7 @@ export const getMoviesByLanguage = async (languageCode: string): Promise<Movie[]
 
 export const getMovie = async (id: string): Promise<Movie> => {
     const res = await fetch(
-        `${TMDB_BASE_URL}/movie/${id}?api_key=${process.env.TMDB_API_KEY}`
+        `${TMDB_BASE_URL}/movie/${id}?api_key=${env.TMDB_API_KEY}`
     );
     if (!res.ok) throw new Error('Failed to fetch movie details');
     return res.json();

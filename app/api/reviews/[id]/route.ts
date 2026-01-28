@@ -93,7 +93,7 @@ export async function PATCH(
                 id,
                 userId: session.user.id,
             },
-            data: validatedData,
+            data: validatedData as any,
         });
 
         if (review.count === 0) {
