@@ -12,6 +12,8 @@ A production-ready, Netflix-style movie review web application built with Next.j
   - Primary API: TMDB (The Movie Database)
   - Fallback API: OMDb
   - Comprehensive movie information with posters, cast, crew, and more
+  - **Global Cinema Discovery:** Explore movies by region (Spain, India) and industry (Bollywood, Tollywood, Kollywood, Mollywood, Sandalwood, Marathi).
+  - **Smart Search:** Dedicated search bars for each category with auto-debouncing and language filtering.
 
 - **Review System**
   - 5-star rating system
@@ -27,6 +29,7 @@ A production-ready, Netflix-style movie review web application built with Next.j
   - Responsive design
   - PWA - installable on mobile and desktop
   - Accessibility features (keyboard navigation, reduced motion support)
+  - **About Page:** Dedicated page explaining the platform's mission.
 
 - **Internationalization**
   - English and Spanish support
@@ -45,7 +48,8 @@ A production-ready, Netflix-style movie review web application built with Next.j
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS + shadcn/ui
 - **Animations**: Framer Motion
-- **Data Fetching**: TanStack Query
+- **Data Fetching**: TanStack Query + Server Actions
+- **Authentication**: NextAuth.js
 - **Authentication**: NextAuth.js
 - **Database**: Prisma + PostgreSQL
 - **Local Storage**: Dexie (IndexedDB)
