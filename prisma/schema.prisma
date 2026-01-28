@@ -7,7 +7,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
 
 model Account {
@@ -16,12 +17,12 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?
   session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -59,40 +60,40 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-enum Verdict {
-  NEVER_WATCH
-  WATCH
-  RECOMMEND
-  STRONGLY_RECOMMEND
-  BEST_EVER
-}
+// enum Verdict {
+//   NEVER_WATCH
+//   WATCH
+//   RECOMMEND
+//   STRONGLY_RECOMMEND
+//   BEST_EVER
+// }
 
 model Review {
-  id          String   @id @default(cuid())
-  userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   // Movie snapshot data
-  movieKey    String   // TMDB ID or OMDb ID
-  movieSource String   // "tmdb" or "omdb"
+  movieKey    String // TMDB ID or OMDb ID
+  movieSource String // "tmdb" or "omdb"
   title       String
   year        String?
   poster      String?
-  genres      String[] // Array of genre strings
+  genres      String // Store arrays as string (JSON) in SQLite
   runtime     String?
   director    String?
-  actors      String[] // Array of actor names
-  overview    String?  @db.Text
-  
+  actors      String // Store arrays as string (JSON) in SQLite
+  overview    String?
+
   // Review data
-  ratingStars Int      // 1-5
-  verdict     Verdict
-  prosText    String?  @db.Text
-  consText    String?  @db.Text
-  reviewText  String?  @db.Text
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  ratingStars Int // 1-5
+  verdict     String // Store as string
+  prosText    String?
+  consText    String?
+  reviewText  String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([userId])
   @@index([movieKey])
