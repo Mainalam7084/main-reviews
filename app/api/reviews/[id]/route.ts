@@ -77,6 +77,7 @@ export async function PATCH(
         }
 
         const body = await request.json();
+<<<<<<< HEAD
         const parsed = ReviewUpdateSchema.safeParse(body);
 
         if (!parsed.success) {
@@ -87,13 +88,20 @@ export async function PATCH(
         }
 
         const validatedData = parsed.data;
+=======
+        const validatedData = ReviewUpdateSchema.parse(body);
+>>>>>>> 132b2a07c3ae41f3acf59fcde857a8b1a4ccd4fa
 
         const review = await prisma.review.updateMany({
             where: {
                 id,
                 userId: session.user.id,
             },
+<<<<<<< HEAD
             data: validatedData as any,
+=======
+            data: validatedData,
+>>>>>>> 132b2a07c3ae41f3acf59fcde857a8b1a4ccd4fa
         });
 
         if (review.count === 0) {
@@ -109,6 +117,16 @@ export async function PATCH(
 
         return NextResponse.json(updatedReview);
     } catch (error) {
+<<<<<<< HEAD
+=======
+        if (error instanceof ZodError) {
+            return NextResponse.json(
+                { error: 'Invalid request data', details: error.issues },
+                { status: 400 }
+            );
+        }
+
+>>>>>>> 132b2a07c3ae41f3acf59fcde857a8b1a4ccd4fa
         console.error('Update review error:', error);
         return NextResponse.json(
             { error: 'Failed to update review' },

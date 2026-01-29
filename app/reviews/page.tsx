@@ -93,10 +93,12 @@ export default async function ReviewsPage() {
                                     </div>
                                 </div>
                             </div>
-                        ))}
-                    </div>
-                )}
-            </main>
-        </div>
+                        ))
+                        }
+                    </div >
+                )
+                }
+            </main >
+        </div >
     );
 }
