@@ -1,16 +1,9 @@
 import { NextResponse } from 'next/server';
-<<<<<<< HEAD
 import { env } from '@/lib/env';
 
 export async function GET() {
     const tmdbKey = env.TMDB_API_KEY;
     const omdbKey = env.OMDB_API_KEY;
-=======
-
-export async function GET() {
-    const tmdbKey = process.env.TMDB_API_KEY;
-    const omdbKey = process.env.OMDB_API_KEY;
->>>>>>> 132b2a07c3ae41f3acf59fcde857a8b1a4ccd4fa
 
     const results = {
         tmdb: { status: 'unknown', message: '' },
