@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { hash } from 'bcryptjs';
 import { prisma } from '@/lib/prisma';
-import { z, ZodError } from 'zod';
+import { z } from 'zod';
 
 const RegisterSchema = z.object({
     name: z.string().min(2),
