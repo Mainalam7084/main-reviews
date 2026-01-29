@@ -91,6 +91,7 @@ model Review {
   prosText    String?
   consText    String?
   reviewText  String?
+  isPublic    Boolean @default(false) // Public reviews visible to everyone
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

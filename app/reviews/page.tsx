@@ -1,6 +1,6 @@
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth/auth-options';
-import { prisma, hasDatabase } from '@/lib/prisma';
+import { prisma } from '@/lib/prisma';
 import { Navbar } from '@/components/layout/navbar';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -25,19 +25,14 @@ export default async function ReviewsPage() {
         );
     }
 
-    let reviews: any[] = [];
-
-    // Only query database if available
-    if (hasDatabase() && prisma) {
-        reviews = await prisma.review.findMany({
-            where: {
-                userId: session.user.id,
-            },
-            orderBy: {
-                createdAt: 'desc',
-            },
-        });
-    }
+    const reviews = await prisma.review.findMany({
+        where: {
+            userId: session.user.id,
+        },
+        orderBy: {
+            createdAt: 'desc',
+        },
+    });
 
     return (
         <div className="min-h-screen bg-black text-white">

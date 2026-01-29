@@ -1,23 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth/auth-options';
-import { prisma, hasDatabase } from '@/lib/prisma';
+import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
 
 const ReviewUpdateSchema = z.object({
     title: z.string().optional(),
     year: z.string().optional(),
     poster: z.string().optional(),
-    genres: z.array(z.string()).optional(),
+    genres: z.string().optional(),
     runtime: z.string().optional(),
     director: z.string().optional(),
-    actors: z.array(z.string()).optional(),
+    actors: z.string().optional(),
     overview: z.string().optional(),
     ratingStars: z.number().min(1).max(5).optional(),
-    verdict: z.enum(['NEVER_WATCH', 'WATCH', 'RECOMMEND', 'STRONGLY_RECOMMEND', 'BEST_EVER']).optional(),
+    verdict: z.string().optional(),
     prosText: z.string().optional(),
     consText: z.string().optional(),
     reviewText: z.string().optional(),
+    isPublic: z.boolean().optional(),
 });
 
 // GET a single review
@@ -33,13 +34,6 @@ export async function GET(
             return NextResponse.json(
                 { error: 'Unauthorized' },
                 { status: 401 }
-            );
-        }
-
-        if (!hasDatabase() || !prisma) {
-            return NextResponse.json(
-                { error: 'Database not available', useLocalStorage: true },
-                { status: 503 }
             );
         }
 
@@ -83,13 +77,6 @@ export async function PATCH(
             );
         }
 
-        if (!hasDatabase() || !prisma) {
-            return NextResponse.json(
-                { error: 'Database not available', useLocalStorage: true },
-                { status: 503 }
-            );
-        }
-
         const body = await request.json();
         const parsed = ReviewUpdateSchema.safeParse(body);
 
@@ -102,23 +89,24 @@ export async function PATCH(
 
         const validatedData = parsed.data;
 
-        const review = await prisma.review.updateMany({
+        // Verify ownership
+        const existingReview = await prisma.review.findFirst({
             where: {
                 id,
                 userId: session.user.id,
             },
-            data: validatedData as any,
         });
 
-        if (review.count === 0) {
+        if (!existingReview) {
             return NextResponse.json(
-                { error: 'Review not found' },
+                { error: 'Review not found or unauthorized' },
                 { status: 404 }
             );
         }
 
-        const updatedReview = await prisma.review.findUnique({
+        const updatedReview = await prisma.review.update({
             where: { id },
+            data: validatedData,
         });
 
         return NextResponse.json(updatedReview);
@@ -147,26 +135,24 @@ export async function DELETE(
             );
         }
 
-        if (!hasDatabase() || !prisma) {
-            return NextResponse.json(
-                { error: 'Database not available', useLocalStorage: true },
-                { status: 503 }
-            );
-        }
-
-        const review = await prisma.review.deleteMany({
+        // Verify ownership
+        const existingReview = await prisma.review.findFirst({
             where: {
                 id,
                 userId: session.user.id,
             },
         });
 
-        if (review.count === 0) {
+        if (!existingReview) {
             return NextResponse.json(
-                { error: 'Review not found' },
+                { error: 'Review not found or unauthorized' },
                 { status: 404 }
             );
         }
+
+        await prisma.review.delete({
+            where: { id },
+        });
 
         return NextResponse.json({ success: true });
     } catch (error) {

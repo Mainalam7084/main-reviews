@@ -4,54 +4,26 @@ import { authOptions } from '@/lib/auth/auth-options';
 import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
 
-const reviewSchema = z.object({
+const migrateReviewSchema = z.object({
     movieKey: z.string(),
     movieSource: z.enum(['tmdb', 'omdb']),
     title: z.string(),
     year: z.string().optional(),
     poster: z.string().optional(),
-    genres: z.string().optional(), // JSON string
+    genres: z.array(z.string()).optional(),
     runtime: z.string().optional(),
     director: z.string().optional(),
-    actors: z.string().optional(), // JSON string
+    actors: z.array(z.string()).optional(),
     overview: z.string().optional(),
     ratingStars: z.number().min(1).max(5),
     verdict: z.string(),
     prosText: z.string().optional(),
     consText: z.string().optional(),
     reviewText: z.string().optional(),
-    isPublic: z.boolean().optional().default(false),
+    isPublic: z.boolean().optional(),
 });
 
-// GET all reviews for logged-in user (private + public)
-export async function GET(request: NextRequest) {
-    try {
-        const session = await getServerSession(authOptions);
-
-        if (!session?.user?.id) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-        }
-
-        const reviews = await prisma.review.findMany({
-            where: {
-                userId: session.user.id,
-            },
-            orderBy: {
-                createdAt: 'desc',
-            },
-        });
-
-        return NextResponse.json({ reviews });
-    } catch (error) {
-        console.error('Fetch reviews error:', error);
-        return NextResponse.json(
-            { error: 'Failed to fetch reviews' },
-            { status: 500 }
-        );
-    }
-}
-
-// POST create a new review
+// POST migrate local review to cloud
 export async function POST(req: Request) {
     try {
         const session = await getServerSession(authOptions);
@@ -61,7 +33,7 @@ export async function POST(req: Request) {
         }
 
         const body = await req.json();
-        const parsed = reviewSchema.safeParse(body);
+        const parsed = migrateReviewSchema.safeParse(body);
 
         if (!parsed.success) {
             return NextResponse.json(
@@ -80,10 +52,10 @@ export async function POST(req: Request) {
                 title: data.title,
                 year: data.year,
                 poster: data.poster,
-                genres: data.genres || '[]',
+                genres: JSON.stringify(data.genres || []),
                 runtime: data.runtime,
                 director: data.director,
-                actors: data.actors || '[]',
+                actors: JSON.stringify(data.actors || []),
                 overview: data.overview,
                 ratingStars: data.ratingStars,
                 verdict: data.verdict,
@@ -94,11 +66,11 @@ export async function POST(req: Request) {
             },
         });
 
-        return NextResponse.json(review, { status: 201 });
+        return NextResponse.json({ success: true, review }, { status: 201 });
     } catch (error) {
-        console.error('Review creation error:', error);
+        console.error('Review migration error:', error);
         return NextResponse.json(
-            { message: 'Failed to create review' },
+            { message: 'Failed to migrate review' },
             { status: 500 }
         );
     }
