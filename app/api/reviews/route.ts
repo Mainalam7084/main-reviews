@@ -57,20 +57,65 @@ export async function POST(req: Request) {
         const session = await getServerSession(authOptions);
 
         if (!session?.user?.id) {
-            return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+            console.error('[POST /api/reviews] Unauthorized: No session or user ID');
+            return NextResponse.json(
+                {
+                    message: 'Unauthorized - Please log in to save reviews to the cloud',
+                    statusCode: 401
+                },
+                { status: 401 }
+            );
         }
 
         const body = await req.json();
+        console.log('[POST /api/reviews] Request body:', JSON.stringify(body, null, 2));
+
         const parsed = reviewSchema.safeParse(body);
 
         if (!parsed.success) {
+            console.error('[POST /api/reviews] Validation failed:', parsed.error.issues);
             return NextResponse.json(
-                { message: 'Invalid input', errors: parsed.error.issues },
+                {
+                    message: 'Invalid input - Please check your review data',
+                    statusCode: 400,
+                    errors: parsed.error.issues
+                },
                 { status: 400 }
             );
         }
 
         const data = parsed.data;
+
+        // Verify user exists in database, create if missing (can happen with JWT sessions)
+        let userExists = await prisma.user.findUnique({
+            where: { id: session.user.id },
+            select: { id: true }
+        });
+
+        if (!userExists) {
+            console.warn('[POST /api/reviews] User not in database, creating from session:', session.user.id);
+
+            // Create user from session data (happens with JWT sessions after DB reset)
+            try {
+                await prisma.user.create({
+                    data: {
+                        id: session.user.id,
+                        email: session.user.email || `user-${session.user.id}@placeholder.com`,
+                        name: session.user.name || 'User',
+                    }
+                });
+                console.log('[POST /api/reviews] User created successfully');
+            } catch (createError) {
+                console.error('[POST /api/reviews] Failed to create user:', createError);
+                return NextResponse.json(
+                    {
+                        message: 'User account error. Please log out and log in again.',
+                        statusCode: 403
+                    },
+                    { status: 403 }
+                );
+            }
+        }
 
         const review = await prisma.review.create({
             data: {
@@ -94,11 +139,18 @@ export async function POST(req: Request) {
             },
         });
 
+        console.log('[POST /api/reviews] Review created successfully:', review.id);
         return NextResponse.json(review, { status: 201 });
     } catch (error) {
-        console.error('Review creation error:', error);
+        console.error('[POST /api/reviews] Database error:', error);
+
+        // Return detailed error message
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
         return NextResponse.json(
-            { message: 'Failed to create review' },
+            {
+                message: `Failed to create review: ${errorMessage}`,
+                statusCode: 500
+            },
             { status: 500 }
         );
     }
