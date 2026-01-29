@@ -1,6 +1,6 @@
 import { Navbar } from '@/components/layout/navbar';
 import { getTrendingMovies, getImageUrl } from '@/lib/tmdb';
-import { prisma } from '@/lib/prisma';
+import { prisma, hasDatabase } from '@/lib/prisma';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Star } from 'lucide-react';
@@ -23,15 +23,20 @@ export default async function Home() {
     };
   }
 
-  const recentReviews = await prisma.review.findMany({
-    take: 3,
-    orderBy: { createdAt: 'desc' },
-    include: {
-      user: {
-        select: { name: true, image: true }
+  let recentReviews: ReviewWithUser[] = [];
+
+  // Only query reviews if database is available
+  if (hasDatabase() && prisma) {
+    recentReviews = await prisma.review.findMany({
+      take: 3,
+      orderBy: { createdAt: 'desc' },
+      include: {
+        user: {
+          select: { name: true, image: true }
+        }
       }
-    }
-  });
+    });
+  }
 
   return (
     <div className="min-h-screen bg-black text-white">

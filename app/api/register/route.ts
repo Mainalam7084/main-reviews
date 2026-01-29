@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { prisma, hasDatabase } from '@/lib/prisma';
 import { hash } from 'bcryptjs';
 import { z } from 'zod';
 
@@ -22,6 +22,14 @@ export async function POST(req: Request) {
         }
 
         const { email, password, name } = parsed.data;
+
+        // Check if database is available
+        if (!hasDatabase() || !prisma) {
+            return NextResponse.json(
+                { message: 'Database not available. Authentication requires database.' },
+                { status: 503 }
+            );
+        }
 
         const existingUser = await prisma.user.findUnique({
             where: { email },

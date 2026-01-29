@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth/auth-options';
-import { prisma } from '@/lib/prisma';
+import { prisma, hasDatabase } from '@/lib/prisma';
 import { z } from 'zod';
 
 const ReviewUpdateSchema = z.object({
@@ -33,6 +33,13 @@ export async function GET(
             return NextResponse.json(
                 { error: 'Unauthorized' },
                 { status: 401 }
+            );
+        }
+
+        if (!hasDatabase() || !prisma) {
+            return NextResponse.json(
+                { error: 'Database not available', useLocalStorage: true },
+                { status: 503 }
             );
         }
 
@@ -73,6 +80,13 @@ export async function PATCH(
             return NextResponse.json(
                 { error: 'Unauthorized' },
                 { status: 401 }
+            );
+        }
+
+        if (!hasDatabase() || !prisma) {
+            return NextResponse.json(
+                { error: 'Database not available', useLocalStorage: true },
+                { status: 503 }
             );
         }
 
@@ -130,6 +144,13 @@ export async function DELETE(
             return NextResponse.json(
                 { error: 'Unauthorized' },
                 { status: 401 }
+            );
+        }
+
+        if (!hasDatabase() || !prisma) {
+            return NextResponse.json(
+                { error: 'Database not available', useLocalStorage: true },
+                { status: 503 }
             );
         }
 

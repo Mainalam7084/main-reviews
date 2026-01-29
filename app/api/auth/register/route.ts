@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { hash } from 'bcryptjs';
-import { prisma } from '@/lib/prisma';
+import { prisma, hasDatabase } from '@/lib/prisma';
 import { z } from 'zod';
 
 const RegisterSchema = z.object({
@@ -22,6 +22,14 @@ export async function POST(request: NextRequest) {
         }
 
         const { name, email, password } = parsed.data;
+
+        // Check if database is available
+        if (!hasDatabase() || !prisma) {
+            return NextResponse.json(
+                { message: 'Database not available. Authentication requires database.' },
+                { status: 503 }
+            );
+        }
 
         // Check if user already exists
         const existingUser = await prisma.user.findUnique({

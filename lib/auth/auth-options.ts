@@ -1,12 +1,13 @@
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import { prisma } from '@/lib/prisma';
+import { prisma, hasDatabase } from '@/lib/prisma';
 import { compare } from 'bcryptjs';
 import type { NextAuthOptions } from 'next-auth';
 import type { Adapter } from 'next-auth/adapters';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 export const authOptions: NextAuthOptions = {
-    adapter: PrismaAdapter(prisma),
+    // Only use Prisma adapter if database is available
+    ...(hasDatabase() && prisma ? { adapter: PrismaAdapter(prisma) as Adapter } : {}),
     session: {
         strategy: 'jwt',
     },
@@ -25,6 +26,11 @@ export const authOptions: NextAuthOptions = {
             async authorize(credentials) {
                 if (!credentials?.email || !credentials?.password) {
                     throw new Error('Invalid credentials');
+                }
+
+                // Check if database is available
+                if (!hasDatabase() || !prisma) {
+                    throw new Error('Authentication requires database. Please configure DATABASE_URL.');
                 }
 
                 const user = await prisma.user.findUnique({

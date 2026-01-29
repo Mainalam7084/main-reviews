@@ -4,7 +4,7 @@ const envSchema = z.object({
     TMDB_API_KEY: z.string().min(1),
     OMDB_API_KEY: z.string().min(1),
     NEXTAUTH_SECRET: z.string().min(1),
-    DATABASE_URL: z.string().min(1),
+    DATABASE_URL: z.string().min(1).optional(), // Optional: allows deployment without DB
     NEXTAUTH_URL: z.string().url().optional(),
 });
 
@@ -24,6 +24,7 @@ export const env = isServer
         TMDB_API_KEY: '',
         OMDB_API_KEY: '',
         NEXTAUTH_SECRET: '',
-        DATABASE_URL: '',
+        DATABASE_URL: undefined,
         NEXTAUTH_URL: '',
     } as z.infer<typeof envSchema>;
+

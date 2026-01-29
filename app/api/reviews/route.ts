@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth/auth-options';
-import { prisma } from '@/lib/prisma';
+import { prisma, hasDatabase } from '@/lib/prisma';
 import { z } from 'zod';
 
 const reviewSchema = z.object({
@@ -19,6 +19,14 @@ export async function POST(req: Request) {
 
     if (!session?.user?.id) {
         return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+    }
+
+    // Check if database is available
+    if (!hasDatabase() || !prisma) {
+        return NextResponse.json(
+            { message: 'Database not available. Please use local storage mode.', useLocalStorage: true },
+            { status: 503 }
+        );
     }
 
     try {
