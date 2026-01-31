@@ -38,6 +38,12 @@ A modern, Netflix-style movie review application built with Next.js, featuring b
 - Prisma adapter for user management
 - Password hashing with bcryptjs
 
+### 👤 Account Management
+- **Profile Settings**: Update display name
+- **Security**: Account deletion (Danger Zone) with cascade delete of all data
+- **Privacy**: Control review visibility
+
+
 ## 🛠️ Tech Stack
 
 - **Framework**: Next.js 16 (App Router)

@@ -78,9 +78,9 @@ export function Navbar() {
                                     </div>
                                 </DropdownMenuLabel>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem onClick={() => router.push('/profile')}>
+                                <DropdownMenuItem onClick={() => router.push('/account')}>
                                     <User className="mr-2 h-4 w-4" />
-                                    <span>Profile</span>
+                                    <span>Account</span>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem onClick={() => signOut()}>
                                     <LogOut className="mr-2 h-4 w-4" />

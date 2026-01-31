@@ -12,7 +12,7 @@ export default function AboutPage() {
                     {/* Header Section */}
                     <section className="space-y-6 text-center">
                         <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
-                            About <span className="text-red-600">MainSpaceVision</span>
+                            About <span className="text-red-600">MainReviews</span>
                         </h1>
                         <p className="text-xl text-gray-400 max-w-2xl mx-auto">
                             The ultimate platform for movie enthusiasts to track their journey, share opinions, and discover new favorites.

@@ -4,24 +4,12 @@ import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Star } from 'lucide-react';
+import { RecentReviewsSection, ReviewWithUser } from '@/components/home/recent-reviews-section';
 
 export default async function Home() {
   const trendingMovies = await getTrendingMovies();
 
-  // Define the shape of our review data since automatic inference might fail
-  interface ReviewWithUser {
-    id: string;
-    poster: string | null;
-    title: string;
-    movieKey: string;
-    ratingStars: number;
-    reviewText: string | null;
-    createdAt: Date;
-    user: {
-      name: string | null;
-      image: string | null;
-    };
-  }
+
 
   // Fetch recent public reviews
   const recentReviews: ReviewWithUser[] = await prisma.review.findMany({
@@ -105,55 +93,8 @@ export default async function Home() {
             </div>
           </div>
 
-          <div>
-            <h2 className="text-2xl font-bold mb-4">Recent Reviews</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {recentReviews.length > 0 ? (
-                recentReviews.map((review: ReviewWithUser) => (
-                  <div key={review.id} className="bg-zinc-900 rounded-lg p-6 border border-zinc-800 flex flex-col">
-                    <div className="flex items-start gap-4 mb-4">
-                      <div className="relative w-16 h-24 shrink-0 rounded overflow-hidden">
-                        {review.poster ? (
-                          <Image
-                            src={getImageUrl(review.poster)}
-                            alt={review.title}
-                            fill
-                            className="object-cover"
-                          />
-                        ) : (
-                          <div className="w-full h-full bg-zinc-800" />
-                        )}
-                      </div>
-                      <div>
-                        <Link href={`/movies/${review.movieKey}`} className="font-bold hover:underline mb-1 block">
-                          {review.title}
-                        </Link>
-                        <div className="flex items-center gap-1 text-yellow-500 text-sm">
-                          <Star className="w-3 h-3 fill-current" />
-                          <span>{review.ratingStars}/5</span>
-                        </div>
-                        <div className="text-xs text-gray-400 mt-1">
-                          by <span className="text-red-400">{review.user.name || 'Anonymous'}</span>
-                        </div>
-                      </div>
-                    </div>
-                    {review.reviewText && (
-                      <p className="text-gray-300 text-sm line-clamp-3 italic">
-                        "{review.reviewText}"
-                      </p>
-                    )}
-                    <div className="mt-auto pt-4 text-xs text-gray-500 flex justify-end">
-                      {new Date(review.createdAt).toLocaleDateString()}
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="col-span-1 md:col-span-3 text-center text-gray-500 py-10 bg-zinc-900/50 rounded-lg">
-                  <p>No reviews yet. Be the first to add one!</p>
-                </div>
-              )}
-            </div>
-          </div>
+          <RecentReviewsSection initialReviews={recentReviews} />
+
         </div>
       </main>
     </div>
