@@ -2,21 +2,28 @@
 
 A modern, Netflix-style movie review application built with Next.js, featuring both local and cloud modes for maximum flexibility.
 
+---
+
 ## ✨ Features
 
 ### 🌐 Dual Mode Operation
 
-**Local Mode (No Login Required)**
+#### **Local Mode (No Login Required)**
 - Create and manage movie reviews without signing in
 - Reviews stored locally in your browser (IndexedDB)
 - Perfect for privacy-conscious users
+- Reviews are private by default
 - Option to publish reviews publicly after creating an account
 
-**Cloud Mode (Logged In)**
-- Save reviews to the cloud database
+> Note: Local Mode stores data only in the browser and is not synced across devices unless the user logs in.
+
+#### **Cloud Mode (Logged In)**
+- Save reviews to a cloud database
 - Access your reviews from any device
 - Choose to make reviews private or public
 - Full CRUD operations on your reviews
+
+---
 
 ### 🔓 Public Reviews
 - Browse all public reviews without logging in
@@ -27,36 +34,48 @@ A modern, Netflix-style movie review application built with Next.js, featuring b
   - Filter by year
 - Pagination for smooth browsing
 
+---
+
 ### 🎥 Movie Data
-- Integration with TMDB (The Movie Database) API
-- Fallback to OMDb API for comprehensive coverage
+- Integration with **TMDB (The Movie Database) API**
+- Fallback to **OMDb API** for comprehensive coverage
 - Rich movie metadata including posters, cast, directors, and more
 
+---
+
 ### 🔐 Authentication
-- NextAuth with JWT sessions
+- NextAuth with JWT-based sessions
 - Secure credential-based authentication
 - Prisma adapter for user management
 - Password hashing with bcryptjs
 
+---
+
 ### 👤 Account Management
 - **Profile Settings**: Update display name
-- **Security**: Account deletion (Danger Zone) with cascade delete of all data
-- **Privacy**: Control review visibility
+- **Security (Danger Zone)**: Delete account and all associated data
+- **Privacy**: Full control over review visibility
 
+> Deleting an account permanently removes all user data and reviews (GDPR-friendly).
+
+---
 
 ## 🛠️ Tech Stack
 
-- **Framework**: Next.js 16 (App Router)
-- **Authentication**: NextAuth v4
+- **Framework**: Next.js (App Router)
+- **Authentication**: NextAuth
 - **Database**: Neon Postgres (serverless)
 - **ORM**: Prisma
-- **Local Storage**: Dexie (IndexedDB wrapper)
-- **Styling**: Tailwind CSS v4
+- **Local Storage**: IndexedDB (via Dexie)
+- **Styling**: Tailwind CSS
 - **Animations**: Framer Motion
 - **UI Components**: Radix UI
-- **Forms**: React Hook Form + Zod validation
-- **State Management**: TanStack Query (React Query)
-- **TypeScript**: Full type safety
+- **Toast Notifications**: Sonner
+- **Forms & Validation**: React Hook Form + Zod
+- **State Management**: TanStack Query
+- **Language**: TypeScript
+
+---
 
 ## 📋 Prerequisites
 
@@ -64,6 +83,8 @@ A modern, Netflix-style movie review application built with Next.js, featuring b
 - A Neon Postgres database (free tier available)
 - TMDB API key
 - OMDb API key
+
+---
 
 ## 🚀 Getting Started
 
@@ -162,8 +183,10 @@ MainReviews/
 │   │   ├── reviews/       # Review CRUD endpoints
 │   │   ├── public-reviews/ # Public reviews endpoint
 │   │   ├── migrate-review/ # Local to cloud migration
-│   │   └── register/      # User registration
+│   │   ├── register/      # User registration
+│   │   └── account/       # Account management
 │   ├── auth/              # Auth pages (login, register)
+│   ├── account/           # Account settings page
 │   ├── public/            # Public reviews page
 │   ├── movies/            # Movie browsing pages
 │   └── layout.tsx         # Root layout
