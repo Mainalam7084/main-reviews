@@ -38,9 +38,6 @@ export default async function Home() {
             <h1 className="max-w-2xl text-5xl font-bold tracking-tight md:text-7xl">
               Track. Review. <span className="text-red-600">Share.</span>
             </h1>
-            <p className="mt-6 max-w-lg text-lg text-gray-300">
-              Your personal movie journal. Rate everything you watch, write detailed reviews, and build your ultimate collection.
-            </p>
             <div className="mt-8 flex gap-4">
               <Link href="/movies">
                 <button className="rounded-md bg-white px-8 py-3 font-bold text-black hover:bg-gray-200 transition">
@@ -55,8 +52,6 @@ export default async function Home() {
             </div>
           </div>
 
-          {/* Background Image Placeholder */}
-          <div className="absolute inset-0 z-0 bg-[url('https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?q=80&w=2940&auto=format&fit=crop')] bg-cover bg-center" />
         </section>
 
         {/* Content Section */}
