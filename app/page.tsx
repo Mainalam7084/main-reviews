@@ -35,7 +35,7 @@ export default async function Home() {
                             New V1.0 Release
                         </div>
                         <h1>
-                            <span className="text-[#E60000] font-bold text-6xl md:text-8xl lg:text-[10rem] uppercase">Raw <span className="text-black">Takes!</span></span>
+                            <span className="text-[#E60000] font-bold text-6xl md:text-8xl lg:text-[10rem] uppercase">Raw <span className="text-foreground">Takes!</span></span>
                         </h1>
                         <p className="max-w-2xl text-xl md:text-2xl font-500 text-muted-foreground font-sans mt-8">
                             The loudest movie platform on the web. Track what you watch, drop your reviews, and discover new favorites. No boring UI allowed.
