@@ -2,7 +2,6 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from 'next-themes';
-import { useLocale } from 'next-intl';
 import { useRouter, usePathname } from 'next/navigation';
 import { useSession, signOut } from 'next-auth/react';
 import Link from 'next/link';
@@ -107,7 +106,6 @@ export function Sidebar({ mobileOpen, onClose }: { mobileOpen: boolean; onClose:
 
 export function TopBar({ onMenuOpen }: { onMenuOpen: () => void }) {
     const { theme, setTheme } = useTheme();
-    const locale = useLocale();
     const router = useRouter();
     const { data: session } = useSession();
     const [mounted, setMounted] = useState(false);
@@ -115,12 +113,6 @@ export function TopBar({ onMenuOpen }: { onMenuOpen: () => void }) {
     const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => { setMounted(true); }, []);
-
-    const toggleLocale = () => {
-        const newLocale = locale === 'en' ? 'es' : 'en';
-        document.cookie = `NEXT_LOCALE=${newLocale}; path=/; max-age=31536000`;
-        router.refresh();
-    };
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
@@ -160,14 +152,6 @@ export function TopBar({ onMenuOpen }: { onMenuOpen: () => void }) {
             </div>
 
             <div className="flex items-center gap-2 ml-auto">
-                {/* Language toggle */}
-                <button
-                    onClick={toggleLocale}
-                    className="brutal-btn px-3 py-1.5 text-xs font-display font-700 uppercase tracking-wider bg-background text-foreground"
-                    title="Switch language"
-                >
-                    {locale === 'en' ? 'ES' : 'EN'}
-                </button>
 
                 {/* Theme toggle */}
                 {mounted && (

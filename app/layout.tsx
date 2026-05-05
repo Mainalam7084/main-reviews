@@ -2,8 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { Space_Grotesk, Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
-import { NextIntlClientProvider } from 'next-intl';
-import { getLocale, getMessages } from 'next-intl/server';
 import { Toaster } from "@/components/ui/sonner";
 import { AppShell } from '@/components/layout/app-shell';
 
@@ -44,25 +42,20 @@ export const viewport: Viewport = {
   themeColor: "#E60000",
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const locale = await getLocale();
-  const messages = await getMessages();
-
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <body className={`${spaceGrotesk.variable} ${inter.variable} font-sans antialiased`}>
-        <NextIntlClientProvider messages={messages}>
-          <Providers>
-            <AppShell>
-              {children}
-            </AppShell>
-            <Toaster />
-          </Providers>
-        </NextIntlClientProvider>
+        <Providers>
+          <AppShell>
+            {children}
+          </AppShell>
+          <Toaster />
+        </Providers>
       </body>
     </html>
   );
