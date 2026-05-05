@@ -61,9 +61,6 @@ export default function AboutPage() {
 
                     {/* Mission Statement */}
                     <div className="bg-[#0A0A0A] text-[#F5F0E8] border-3 border-[#F5F0E8] p-8 md:p-12 shadow-[8px_8px_0px_0px_#E60000] relative">
-                        <div className="absolute -top-6 right-8 text-5xl rotate-12 drop-shadow-[2px_2px_0px_#F5F0E8]">
-                            🎬
-                        </div>
                         <h2 className="text-3xl md:text-5xl font-display font-800 uppercase tracking-tighter mb-6 text-[#FFE500]">
                             Our Mission
                         </h2>
