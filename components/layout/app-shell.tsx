@@ -17,7 +17,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 <TopBar onMenuOpen={() => setMobileOpen(true)} />
 
                 {/* Main content area — padded below topbar */}
-                <main className="pt-16 min-h-screen">
+                <main className="pt-16 min-h-screen px-4">
                     {children}
                 </main>
             </div>

@@ -74,7 +74,7 @@ export default async function MovieDetailsPage({
                     </div>
                 )}
 
-                <div className="relative z-20 container mx-auto px-4 md:px-12 pt-32 pb-16 md:pt-40 md:pb-20 flex flex-col md:flex-row gap-8 lg:gap-16 items-end">
+                <div className="relative z-20 container mx-auto pt-32 pb-16 md:pt-40 md:pb-20 flex flex-col md:flex-row gap-8 lg:gap-16 items-end">
                     {/* Brutalist Poster */}
                     <div className="w-48 md:w-80 shrink-0 bg-muted border-3 border-[#F5F0E8] shadow-[12px_12px_0px_0px_#FFE500] -rotate-2 hover:rotate-0 transition-transform duration-500 hidden md:block">
                         {movie.poster_path ? (
@@ -136,7 +136,7 @@ export default async function MovieDetailsPage({
             </div>
 
             {/* Content Sections */}
-            <main className="container mx-auto px-4 md:px-12 py-16 space-y-24">
+            <main className="container mx-auto py-16 space-y-24">
 
                 {/* Stats Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6">

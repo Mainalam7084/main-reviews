@@ -49,21 +49,21 @@ export default async function CategoryPage({ params }: PageProps) {
     return (
         <div className="w-full">
             {/* Header section */}
-            <div className="px-4 md:px-12 py-12 md:py-20 border-b-3 border-border bg-background relative overflow-hidden">
+            <div className="py-12 md:py-20 border-b-3 border-border bg-background relative overflow-hidden">
                 {/* Decorative float element */}
-                <div 
+                <div
                     className="absolute -top-10 -right-10 w-40 h-40 rounded-full border-4 border-border opacity-20 animate-float pointer-events-none"
                     style={{ backgroundColor: accentColor, boxShadow: `8px 8px 0px 0px var(--border)` }}
                 />
-                
+
                 <div className="relative z-10 max-w-5xl">
                     <Link href="/movies" className="inline-flex items-center gap-2 mb-8 group">
                         <BrutalButton variant="ghost" size="sm" className="text-xs">
                             <ArrowLeft size={14} /> Back to Movies
                         </BrutalButton>
                     </Link>
-                    
-                    <h1 
+
+                    <h1
                         className="text-5xl md:text-8xl font-display font-800 tracking-tighter uppercase text-foreground leading-[0.9]"
                         style={{ textShadow: `4px 4px 0px ${accentColor}` }}
                     >
@@ -75,7 +75,7 @@ export default async function CategoryPage({ params }: PageProps) {
                 </div>
             </div>
 
-            <main className="w-full px-4 md:px-12 py-12 bg-background">
+            <main className="w-full py-12 bg-background">
                 <CategorySearch initialMovies={movies} filterLanguage={filterLanguage} />
             </main>
         </div>

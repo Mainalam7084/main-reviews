@@ -28,7 +28,7 @@ export default async function Home() {
     return (
         <div className="w-full">
             {/* HERO SECTION */}
-            <section className="relative min-h-[50vh] w-full flex flex-col justify-center px-4 md:px-12 py-12 md:py-16 border-b-3 border-border bg-background">
+            <section className="relative min-h-[50vh] w-full flex flex-col justify-center py-12 md:py-16 border-b-3 border-border bg-background">
                 <div className="relative z-10 max-w-5xl mx-auto w-full">
                     <div className="space-y-4 md:space-y-6">
                         <div className="inline-block bg-[#E60000] text-white px-4 py-1 border-2 border-[#0A0A0A] font-display font-800 uppercase tracking-widest text-sm md:text-base shadow-[3px_3px_0px_0px_#0A0A0A] animate-float">
@@ -53,7 +53,7 @@ export default async function Home() {
 
             {/* TRENDING CAROUSEL */}
             <section className="py-16 md:py-24 border-b-3 border-border bg-background overflow-hidden">
-                <div className="px-4 md:px-12 mb-8 flex items-end justify-between">
+                <div className="mb-8 flex items-end justify-between">
                     <div>
                         <h2 className="font-display font-800 text-4xl md:text-5xl uppercase tracking-tight text-foreground" style={{ textShadow: '3px 3px 0px var(--primary)' }}>
                             Trending Now
@@ -69,7 +69,7 @@ export default async function Home() {
 
                 {/* Horizontal scroll container */}
                 <div className="w-full overflow-x-auto pb-8 pt-4 snap-x-mandatory scrollbar-hide">
-                    <div className="flex gap-6 w-max px-4 md:px-12 after:w-1 md:after:w-6 after:shrink-0">
+                    <div className="flex gap-6 w-max after:w-1 md:after:w-6 after:shrink-0">
                         {trendingMovies.slice(0, 10).map((movie, index) => (
                             <div key={movie.id} className="w-[200px] md:w-[240px] shrink-0 snap-start">
                                 <MovieCard movie={movie} priority={index < 4} />
@@ -81,7 +81,7 @@ export default async function Home() {
 
             {/* RECENT REVIEWS */}
             <section className="py-16 md:py-24 bg-[#F5F0E8] dark:bg-[#0A0A0A]">
-                <div className="px-4 md:px-12 max-w-7xl mx-auto">
+                <div className="max-w-7xl mx-auto">
                     <div className="mb-12">
                         <h2 className="font-display font-800 text-4xl md:text-5xl uppercase tracking-tight text-foreground" style={{ textShadow: '3px 3px 0px var(--secondary)' }}>
                             Latest Hot Takes

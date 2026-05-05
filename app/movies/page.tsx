@@ -37,7 +37,7 @@ export default async function MoviesPage() {
 
     const MovieSection = ({ title, movies, slug, color = 'var(--primary)' }: { title: string, movies: Movie[], slug: string, color?: string }) => (
         <section className="py-12 border-b-3 border-border bg-background">
-            <div className="px-4 md:px-12 mb-6 flex items-end justify-between">
+            <div className="mb-6 flex items-end justify-between">
                 <div>
                     <h2 className="font-display font-800 text-3xl md:text-4xl uppercase tracking-tight text-foreground" style={{ textShadow: `2px 2px 0px ${color}` }}>
                         {title}
@@ -50,9 +50,9 @@ export default async function MoviesPage() {
                     </BrutalButton>
                 </Link>
             </div>
-            
+
             <div className="w-full overflow-x-auto pb-8 pt-4 snap-x-mandatory scrollbar-hide">
-                <div className="flex gap-6 w-max px-4 md:px-12 after:w-1 md:after:w-6 after:shrink-0">
+                <div className="flex gap-6 w-max after:w-1 md:after:w-6 after:shrink-0">
                     {movies.length > 0 ? (
                         movies.slice(0, 12).map((movie) => (
                             <div key={movie.id} className="w-[180px] md:w-[220px] shrink-0 snap-start">
@@ -72,7 +72,7 @@ export default async function MoviesPage() {
     return (
         <div className="w-full">
             {/* Header section */}
-            <div className="px-4 md:px-12 py-12 md:py-16 border-b-3 border-border bg-background">
+            <div className="py-12 md:py-16 border-b-3 border-border bg-background">
                 <div className="max-w-5xl">
                     <h1 className="text-5xl md:text-7xl font-display font-800 tracking-tighter uppercase text-foreground">
                         Discover Cinema
@@ -88,7 +88,7 @@ export default async function MoviesPage() {
                 <MovieSection title="Top Rated Classics" movies={topRated} slug="top-rated" color="#FFE500" />
                 <MovieSection title="Coming Soon" movies={upcoming} slug="upcoming" color="#0066FF" />
 
-                <div className="px-4 md:px-12 py-16 bg-[#FFE500] border-b-3 border-border">
+                <div className="py-16 bg-[#FFE500] border-b-3 border-border">
                     <h2 className="text-4xl md:text-6xl font-display font-800 text-[#0A0A0A] uppercase tracking-tighter" style={{ textShadow: '3px 3px 0px #FFFFFF' }}>
                         Global Hits
                     </h2>
