@@ -1,11 +1,10 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { getImageUrl, type Movie } from '@/lib/tmdb';
+import { useState, useRef } from 'react';
+import { type Movie } from '@/lib/tmdb';
 import { searchMovies } from '@/app/movies/actions';
-import { motion, AnimatePresence } from 'framer-motion';
+import { MovieCard } from '@/components/ui/movie-card';
+import { Search } from 'lucide-react';
 
 export function CategorySearch({
     initialMovies,
@@ -44,69 +43,36 @@ export function CategorySearch({
 
     return (
         <div>
-            <div className="mb-8 relative">
-                <input
-                    type="text"
-                    placeholder="Search in this category..."
-                    className="w-full max-w-md rounded-md border border-zinc-700 bg-zinc-800 px-4 py-3 text-white placeholder-gray-400 focus:border-red-600 focus:outline-none focus:ring-1 focus:ring-red-600 transition-all"
-                    onChange={(e) => handleSearch(e.target.value)}
-                />
-                {isSearching && (
-                    <div className="absolute top-3 right-3 md:left-[26rem] md:right-auto w-5 h-5 border-2 border-red-600 border-t-transparent rounded-full animate-spin" />
-                )}
+            <div className="mb-12 relative max-w-xl">
+                <div className="relative group">
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-[#E60000] transition-colors" size={20} />
+                    <input
+                        type="text"
+                        placeholder="Search in this category..."
+                        className="brutal-input w-full pl-12 pr-4 py-4 text-lg bg-background text-foreground placeholder:text-muted-foreground"
+                        onChange={(e) => handleSearch(e.target.value)}
+                    />
+                    {isSearching && (
+                        <div className="absolute top-1/2 -translate-y-1/2 right-4 w-6 h-6 border-3 border-[#E60000] border-t-transparent rounded-full animate-spin" />
+                    )}
+                </div>
             </div>
 
-            <motion.div
-                layout
-                className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6"
-            >
-                <AnimatePresence mode='popLayout'>
-                    {movies.length > 0 ? (
-                        movies.map((movie) => (
-                            <motion.div
-                                layout
-                                key={movie.id}
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0, scale: 0.9 }}
-                                transition={{ duration: 0.2 }}
-                            >
-                                <Link href={`/movies/${movie.id}`} className="group relative block transition-transform hover:scale-105">
-                                    <div className="aspect-[2/3] w-full overflow-hidden rounded-md bg-zinc-800 shadow-lg">
-                                        {movie.poster_path ? (
-                                            <Image
-                                                src={getImageUrl(movie.poster_path)}
-                                                alt={movie.title}
-                                                width={300}
-                                                height={450}
-                                                className="h-full w-full object-cover transition-opacity group-hover:opacity-80"
-                                            />
-                                        ) : (
-                                            <div className="flex h-full items-center justify-center text-zinc-500">
-                                                No Image
-                                            </div>
-                                        )}
-                                    </div>
-                                    <div className="mt-2">
-                                        <h3 className="truncate text-sm font-medium text-white group-hover:text-red-500 transition-colors">{movie.title}</h3>
-                                        <p className="text-xs text-gray-400">
-                                            {movie.release_date?.split('-')[0] || 'N/A'} • ⭐ {(movie.vote_average || 0).toFixed(1)}
-                                        </p>
-                                    </div>
-                                </Link>
-                            </motion.div>
-                        ))
-                    ) : (
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            className="col-span-full py-10 text-center text-gray-500"
-                        >
-                            No movies found.
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-            </motion.div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 md:gap-8">
+                {movies.length > 0 ? (
+                    movies.map((movie) => (
+                        <MovieCard key={movie.id} movie={movie} />
+                    ))
+                ) : (
+                    <div className="col-span-full py-20 px-8 border-3 border-border shadow-[6px_6px_0px_0px_var(--border)] bg-card text-center">
+                        <h2 className="text-2xl font-display font-800 uppercase tracking-tight text-foreground mb-4">No Movies Found</h2>
+                        <p className="font-500 text-muted-foreground text-lg max-w-md mx-auto">
+                            No titles match your filter. Try searching for something else or browse the full collection.
+                        </p>
+                    </div>
+                )}
+            </div>
         </div>
     );
 }
+

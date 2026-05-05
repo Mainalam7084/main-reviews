@@ -1,4 +1,3 @@
-import { Navbar } from '@/components/layout/navbar';
 import { getMoviesByCategory, CATEGORIES, type CategorySlug } from '@/lib/tmdb';
 import { notFound } from 'next/navigation';
 import { CategorySearch } from './search-ui';
@@ -23,11 +22,6 @@ export default async function CategoryPage({ params }: PageProps) {
 
     const movies = await getMoviesByCategory(slug);
 
-    // Determine the filter language if this is a language-specific category
-    // For 'country', we might default to Spanish for 'spain' if we want to filter search results 
-    // by language 'es' as a close approximation, or pass undefined if strict filtering is hard.
-    // Given the user request, let's try to pass 'es' for Spain for better "search within section" feel.
-
     let filterLanguage: string | undefined = undefined;
     if (config.type === 'language') {
         filterLanguage = config.value;
@@ -36,16 +30,23 @@ export default async function CategoryPage({ params }: PageProps) {
     }
 
     return (
-        <div className="min-h-screen bg-black text-white">
-            <Navbar />
-            <main className="container mx-auto px-4 py-24">
-                <div className="mb-8">
-                    <h1 className="text-4xl font-bold text-red-600 mb-2">{config.title}</h1>
-                    <p className="text-gray-400">Explore the best movies in this collection.</p>
+        <div className="w-full">
+            {/* Header section */}
+            <div className="px-4 md:px-12 py-12 md:py-16 border-b-3 border-border bg-background">
+                <div className="max-w-5xl">
+                    <h1 className="text-5xl md:text-7xl font-display font-800 tracking-tighter uppercase text-foreground">
+                        {config.title}
+                    </h1>
+                    <p className="mt-4 text-xl font-500 text-muted-foreground font-sans max-w-2xl">
+                        Explore the best movies in this collection. High-quality cinema curated for you.
+                    </p>
                 </div>
+            </div>
 
+            <main className="w-full px-4 md:px-12 py-12 bg-background">
                 <CategorySearch initialMovies={movies} filterLanguage={filterLanguage} />
             </main>
         </div>
     );
 }
+
