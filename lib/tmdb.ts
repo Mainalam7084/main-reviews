@@ -137,10 +137,28 @@ export const getMoviesByLanguage = async (languageCode: string): Promise<Movie[]
     return data.results;
 };
 
-export const getMovie = async (id: string): Promise<Movie> => {
+export const getMovie = async (id: string): Promise<any> => {
     const res = await fetch(
         `${TMDB_BASE_URL}/movie/${id}?api_key=${env.TMDB_API_KEY}`
     );
     if (!res.ok) throw new Error('Failed to fetch movie details');
     return res.json();
 };
+
+export const getMovieCredits = async (id: string): Promise<any> => {
+    const res = await fetch(
+        `${TMDB_BASE_URL}/movie/${id}/credits?api_key=${env.TMDB_API_KEY}`
+    );
+    if (!res.ok) throw new Error('Failed to fetch movie credits');
+    return res.json();
+};
+
+export const getSimilarMovies = async (id: string): Promise<Movie[]> => {
+    const res = await fetch(
+        `${TMDB_BASE_URL}/movie/${id}/similar?api_key=${env.TMDB_API_KEY}`
+    );
+    if (!res.ok) throw new Error('Failed to fetch similar movies');
+    const data = await res.json();
+    return data.results;
+};
+
