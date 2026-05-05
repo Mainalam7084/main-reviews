@@ -24,7 +24,15 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "MainReviews — Bold Movie Reviews",
   description: "The boldest movie review platform on the web. Track, rate, and share your cinematic journey.",
-  manifest: "/manifest.json",
+  manifest: "/site.webmanifest",
+  icons: {
+    icon: [
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
