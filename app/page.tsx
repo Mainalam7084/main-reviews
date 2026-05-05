@@ -75,8 +75,8 @@ export default async function Home() {
                 </div>
 
                 {/* Horizontal scroll container */}
-                <div className="w-full overflow-x-auto pb-8 pt-4 px-4 md:px-12 snap-x-mandatory scrollbar-hide">
-                    <div className="flex gap-6 w-max">
+                <div className="w-full overflow-x-auto pb-8 pt-4 snap-x-mandatory scrollbar-hide">
+                    <div className="flex gap-6 w-max px-4 md:px-12 after:w-1 md:after:w-6 after:shrink-0">
                         {trendingMovies.slice(0, 10).map((movie, index) => (
                             <div key={movie.id} className="w-[200px] md:w-[240px] shrink-0 snap-start">
                                 <MovieCard movie={movie} priority={index < 4} />

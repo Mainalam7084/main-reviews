@@ -51,8 +51,8 @@ export default async function MoviesPage() {
                 </Link>
             </div>
             
-            <div className="w-full overflow-x-auto pb-8 pt-4 px-4 md:px-12 snap-x-mandatory scrollbar-hide">
-                <div className="flex gap-6 w-max">
+            <div className="w-full overflow-x-auto pb-8 pt-4 snap-x-mandatory scrollbar-hide">
+                <div className="flex gap-6 w-max px-4 md:px-12 after:w-1 md:after:w-6 after:shrink-0">
                     {movies.length > 0 ? (
                         movies.slice(0, 12).map((movie) => (
                             <div key={movie.id} className="w-[180px] md:w-[220px] shrink-0 snap-start">

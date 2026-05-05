@@ -55,7 +55,7 @@ export function Sidebar({ mobileOpen, onClose }: { mobileOpen: boolean; onClose:
                 style={{ borderRight: '3px solid var(--border)' }}
             >
                 {/* Logo */}
-                <div className="flex items-center justify-between px-5 py-5" style={{ borderBottom: '3px solid var(--border)' }}>
+                <div className="flex items-center justify-between px-5 h-16 shrink-0" style={{ borderBottom: '3px solid var(--border)' }}>
                     <Link href="/" onClick={onClose}>
                         <span className="font-display text-xl font-800 tracking-tight">
                             <span className="text-[#E60000]">Main</span>
