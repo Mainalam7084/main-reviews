@@ -17,10 +17,10 @@ export default function AboutPage() {
                         The ultimate platform for movie enthusiasts to track their journey, share unapologetic opinions, and discover new favorites.
                     </p>
                 </div>
-                
+
                 {/* Decorative Elements */}
                 <div className="absolute top-10 left-10 w-20 h-20 bg-[#FFE500] border-4 border-border rounded-full shadow-[4px_4px_0px_0px_var(--border)] animate-float" />
-                <div className="absolute bottom-10 right-10 w-24 h-24 bg-[#E60000] border-4 border-border shadow-[4px_4px_0px_0px_var(--border)] rotate-12" />
+                <div className="loader !absolute bottom-4 right-4 md:bottom-10 md:right-10 scale-75 md:scale-100 opacity-80"></div>
             </section>
 
             <main className="container mx-auto px-4 md:px-12 py-16 md:py-24">

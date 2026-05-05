@@ -130,7 +130,12 @@
     font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
     font-weight: 700;
   }
@@ -260,10 +265,81 @@
   mix-blend-mode: overlay;
 }
 
+
+/* Loader */
+/* From Uiverse.io by alexruix */
+.loader {
+  width: 120px;
+  height: 90px;
+}
+
+.loader:before {
+  content: "";
+  position: absolute;
+  bottom: 30px;
+  left: 50px;
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  background: #E60000;
+  animation: loading-bounce 0.5s ease-in-out infinite alternate;
+}
+
+.loader:after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 7px;
+  width: 45px;
+  border-radius: 4px;
+  box-shadow: 0 5px 0 #0A0A0A, -35px 50px 0 #0A0A0A, -70px 95px 0 #0A0A0A;
+  animation: loading-step 1s ease-in-out infinite;
+}
+
+@keyframes loading-bounce {
+  0% {
+    transform: scale(1, 0.7);
+  }
+
+  40% {
+    transform: scale(0.8, 1.2);
+  }
+
+  60% {
+    transform: scale(1, 1);
+  }
+
+  100% {
+    bottom: 80px;
+  }
+}
+
+@keyframes loading-step {
+  0% {
+    box-shadow: 0 10px 0 rgba(0, 0, 0, 0),
+      0 10px 0 #0A0A0A,
+      -35px 50px 0 #0A0A0A,
+      -70px 90px 0 #0A0A0A;
+  }
+
+  100% {
+    box-shadow: 0 10px 0 #0A0A0A,
+      -35px 50px 0 #0A0A0A,
+      -70px 90px 0 #0A0A0A,
+      -70px 90px 0 rgba(0, 0, 0, 0);
+  }
+}
+
 /* Marquee animation */
 @keyframes marquee {
-  0% { transform: translateX(0%); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0%);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 .animate-marquee {
@@ -272,8 +348,15 @@
 
 /* Float animation */
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
 }
 
 .animate-float {
@@ -295,12 +378,14 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
