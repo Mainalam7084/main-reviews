@@ -28,16 +28,14 @@ export default async function Home() {
     return (
         <div className="w-full">
             {/* HERO SECTION */}
-            <section className="relative min-h-[70vh] w-full flex flex-col justify-center px-4 md:px-12 py-20 border-b-3 border-border bg-background">
+            <section className="relative min-h-[50vh] w-full flex flex-col justify-center px-4 md:px-12 py-12 md:py-16 border-b-3 border-border bg-background">
                 <div className="relative z-10 max-w-5xl mx-auto w-full">
                     <div className="space-y-4 md:space-y-6">
                         <div className="inline-block bg-[#E60000] text-white px-4 py-1 border-2 border-[#0A0A0A] font-display font-800 uppercase tracking-widest text-sm md:text-base shadow-[3px_3px_0px_0px_#0A0A0A] animate-float">
                             New V1.0 Release
                         </div>
-                        <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-display font-800 tracking-tighter leading-[0.85] text-foreground uppercase">
-                            Bold Cinema.
-                            <br />
-                            <span className="text-[#E60000]">Raw Takes.</span>
+                        <h1>
+                            <span className="text-[#E60000] font-bold text-6xl md:text-8xl lg:text-[10rem] uppercase">Raw <span className="text-black">Takes!</span></span>
                         </h1>
                         <p className="max-w-2xl text-xl md:text-2xl font-500 text-muted-foreground font-sans mt-8">
                             The loudest movie platform on the web. Track what you watch, drop your reviews, and discover new favorites. No boring UI allowed.
@@ -46,11 +44,6 @@ export default async function Home() {
                             <Link href="/movies">
                                 <BrutalButton variant="primary" size="xl">
                                     Start Exploring
-                                </BrutalButton>
-                            </Link>
-                            <Link href="/auth/register">
-                                <BrutalButton variant="dark" size="xl">
-                                    Join the Chaos
                                 </BrutalButton>
                             </Link>
                         </div>
