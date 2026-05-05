@@ -1,257 +1,141 @@
-# 🎬 Main Reviews
+# Main Reviews
 
-A modern, Netflix-style movie review application built with Next.js, featuring both local and cloud modes for maximum flexibility.
-
----
-
-## ✨ Features
-
-### 🌐 Dual Mode Operation
-
-#### **Local Mode (No Login Required)**
-- Create and manage movie reviews without signing in
-- Reviews stored locally in your browser (IndexedDB)
-- Perfect for privacy-conscious users
-- Reviews are private by default
-- Option to publish reviews publicly after creating an account
-
-> Note: Local Mode stores data only in the browser and is not synced across devices unless the user logs in.
-
-#### **Cloud Mode (Logged In)**
-- Save reviews to a cloud database
-- Access your reviews from any device
-- Choose to make reviews private or public
-- Full CRUD operations on your reviews
+A modern movie review application built with Next.js, featuring dual-mode operation for both local and cloud-based review management.
 
 ---
 
-### 🔓 Public Reviews
-- Browse all public reviews without logging in
-- Netflix-style grid layout
-- Advanced filtering and search:
-  - Sort by most recent, highest rated, or oldest
-  - Search by movie title
-  - Filter by year
-- Pagination for smooth browsing
+## Features
+
+### Dual Mode Operation
+
+#### Local Mode
+- Create and manage movie reviews without signing in.
+- Reviews are stored locally in the browser using IndexedDB.
+- Ensures privacy by default as data stays on the user's device.
+- Option to migrate and publish reviews publicly after creating an account.
+
+#### Cloud Mode
+- Securely save reviews to a cloud database for cross-device access.
+- Full CRUD (Create, Read, Update, Delete) operations on reviews.
+- Granular control over review visibility (Private or Public).
+
+### Public Review Discovery
+- Browse a curated list of public reviews from the community.
+- Advanced filtering by title, release year, and rating.
+- Sorting options for most recent, highest rated, and oldest reviews.
+- Responsive grid layout optimized for all device sizes.
+
+### Movie Data Integration
+- Powered by TMDB (The Movie Database) API for rich metadata.
+- Fallback support for OMDb API to ensure comprehensive movie coverage.
+- Detailed movie information including cast, crew, and technical specifications.
 
 ---
 
-### 🎥 Movie Data
-- Integration with **TMDB (The Movie Database) API**
-- Fallback to **OMDb API** for comprehensive coverage
-- Rich movie metadata including posters, cast, directors, and more
+## Technical Stack
 
----
-
-### 🔐 Authentication
-- NextAuth with JWT-based sessions
-- Secure credential-based authentication
-- Prisma adapter for user management
-- Password hashing with bcryptjs
-
----
-
-### 👤 Account Management
-- **Profile Settings**: Update display name
-- **Security (Danger Zone)**: Delete account and all associated data
-- **Privacy**: Full control over review visibility
-
-> Deleting an account permanently removes all user data and reviews (GDPR-friendly).
-
----
-
-## 🛠️ Tech Stack
-
-- **Framework**: Next.js (App Router)
-- **Authentication**: NextAuth
-- **Database**: Neon Postgres (serverless)
+- **Frontend Framework**: Next.js (App Router)
+- **Authentication**: NextAuth.js
+- **Database**: Neon Postgres (Serverless)
 - **ORM**: Prisma
-- **Local Storage**: IndexedDB (via Dexie)
+- **Client-side Storage**: IndexedDB (via Dexie)
 - **Styling**: Tailwind CSS
 - **Animations**: Framer Motion
 - **UI Components**: Radix UI
-- **Toast Notifications**: Sonner
-- **Forms & Validation**: React Hook Form + Zod
 - **State Management**: TanStack Query
-- **Language**: TypeScript
+- **Development Language**: TypeScript
 
 ---
 
-## 📋 Prerequisites
+## Prerequisites
 
-- Node.js 18+ and npm
-- A Neon Postgres database (free tier available)
+- Node.js 18.0.0 or higher
+- npm or yarn package manager
+- Neon Postgres database account
 - TMDB API key
 - OMDb API key
 
 ---
 
-## 🚀 Getting Started
+## Installation and Setup
 
 ### 1. Clone the Repository
-
 ```bash
-git clone <your-repo-url>
+git clone <repository-url>
 cd MainReviews
 ```
 
 ### 2. Install Dependencies
-
 ```bash
 npm install
 ```
 
-### 3. Set Up Environment Variables
-
-Create a `.env` file in the root directory:
+### 3. Configure Environment Variables
+Create a `.env` file in the root directory and provide the following values:
 
 ```env
-# Movie APIs (Required)
-TMDB_API_KEY=your_tmdb_api_key_here
-OMDB_API_KEY=your_omdb_api_key_here
+# Movie APIs
+TMDB_API_KEY=your_tmdb_api_key
+OMDB_API_KEY=your_omdb_api_key
 
-# Authentication (Required)
-NEXTAUTH_SECRET=your_nextauth_secret_here
+# Authentication
+NEXTAUTH_SECRET=your_nextauth_secret
 NEXTAUTH_URL=http://localhost:3000
 
-# Database (Required - Neon Postgres)
-DATABASE_URL=postgresql://user:password@host/database?sslmode=require
+# Database
+DATABASE_URL=your_postgresql_connection_string
 ```
 
-**How to get API keys:**
-- **TMDB API Key**: Sign up at [themoviedb.org](https://www.themoviedb.org/settings/api)
-- **OMDb API Key**: Get one at [omdbapi.com](http://www.omdbapi.com/apikey.aspx)
-- **NEXTAUTH_SECRET**: Generate with `openssl rand -base64 32` or use [generate-secret.vercel.app](https://generate-secret.vercel.app/32)
-- **DATABASE_URL**: Create a free database at [neon.tech](https://neon.tech)
-
-### 4. Set Up Database
-
+### 4. Initialize Database
 ```bash
-# Generate Prisma Client
 npx prisma generate
-
-# Run migrations
 npx prisma migrate deploy
-
-# (Optional) Open Prisma Studio to view your database
-npx prisma studio
 ```
 
-### 5. Run Development Server
-
+### 5. Start Development Server
 ```bash
 npm run dev
 ```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-## 📦 Production Deployment
-
-### Deploy to Vercel
-
-1. Push your code to GitHub
-2. Import your repository in Vercel
-3. Add environment variables in Vercel dashboard:
-   - `TMDB_API_KEY`
-   - `OMDB_API_KEY`
-   - `NEXTAUTH_SECRET`
-   - `NEXTAUTH_URL` (your production URL)
-   - `DATABASE_URL` (your Neon Postgres connection string)
-4. Deploy!
-
-### Database Migrations
-
-Vercel will automatically run `prisma generate` via the `postinstall` script. For migrations:
-
-```bash
-# On your local machine, after schema changes
-npx prisma migrate dev --name your_migration_name
-
-# Commit the migration files
-git add prisma/migrations
-git commit -m "Add database migration"
-git push
-```
-
-## 🏗️ Project Structure
-
-```
-MainReviews/
-├── app/
-│   ├── api/
-│   │   ├── auth/          # NextAuth API routes
-│   │   ├── reviews/       # Review CRUD endpoints
-│   │   ├── public-reviews/ # Public reviews endpoint
-│   │   ├── migrate-review/ # Local to cloud migration
-│   │   ├── register/      # User registration
-│   │   └── account/       # Account management
-│   ├── auth/              # Auth pages (login, register)
-│   ├── account/           # Account settings page
-│   ├── public/            # Public reviews page
-│   ├── movies/            # Movie browsing pages
-│   └── layout.tsx         # Root layout
-├── components/            # Reusable UI components
-├── lib/
-│   ├── auth/              # Auth configuration
-│   ├── db/                # Local database (Dexie)
-│   ├── api/               # API clients (TMDB, OMDb)
-│   ├── prisma.ts          # Prisma client
-│   └── env.ts             # Environment validation
-├── prisma/
-│   ├── schema.prisma      # Database schema
-│   └── migrations/        # Database migrations
-└── public/                # Static assets
-```
-
-## 🔒 Security Features
-
-- **JWT Sessions**: Stateless authentication with encrypted cookies
-- **Password Hashing**: bcryptjs for secure password storage
-- **Environment Validation**: Zod schema validation for env vars
-- **SQL Injection Protection**: Prisma ORM with parameterized queries
-- **CORS Protection**: Next.js built-in security headers
-- **Private by Default**: Reviews are private unless explicitly made public
-
-## 📝 How It Works
-
-### Local Mode Flow
-1. User creates a review without logging in
-2. Review is stored in browser's IndexedDB
-3. User can optionally toggle "Publish publicly"
-4. If public is enabled, user is prompted to create an account
-5. After login, local review is migrated to cloud database
-
-### Cloud Mode Flow
-1. User logs in or registers
-2. Reviews are saved directly to Neon Postgres
-3. User can toggle `isPublic` on any review
-4. Public reviews appear on `/public` page for everyone
-
-### Public Reviews
-- Anyone can view public reviews at `/public`
-- No authentication required
-- Reviews show movie info, rating, verdict, and author
-- Advanced filtering and search capabilities
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- [TMDB](https://www.themoviedb.org/) for movie data
-- [OMDb](http://www.omdbapi.com/) for additional movie information
-- [Neon](https://neon.tech) for serverless Postgres
-- [Vercel](https://vercel.com) for hosting
-
-## 📧 Support
-
-For issues and questions, please open an issue on GitHub.
+The application will be available at http://localhost:3000.
 
 ---
 
-**Built with ❤️ using Next.js and TypeScript**
+## Project Structure
+
+- **app/**: Application routes, API endpoints, and page layouts.
+- **components/**: Reusable UI elements and feature-specific components.
+- **lib/**: Utility functions, database configurations, and API clients.
+- **prisma/**: Database schema and migration files.
+- **public/**: Static assets and icons.
+- **types/**: TypeScript type definitions and interfaces.
+
+---
+
+## Security
+
+- **Encrypted Sessions**: JWT-based authentication with secure cookies.
+- **Data Protection**: Industry-standard password hashing using bcryptjs.
+- **Input Validation**: Strict schema validation for environment variables and forms using Zod.
+- **Query Safety**: Parameterized database queries via Prisma to prevent SQL injection.
+
+---
+
+## Deployment
+
+The application is optimized for deployment on the Vercel platform.
+
+1. Connect your GitHub repository to Vercel.
+2. Configure the required environment variables in the Vercel dashboard.
+3. The build process will automatically handle Prisma client generation.
+
+---
+
+## License
+
+This project is licensed under the MIT License. See the LICENSE file for more information.
+
+---
+
+## Support
+
+For technical support or feature requests, please open an issue in the GitHub repository.
