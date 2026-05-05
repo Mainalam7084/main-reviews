@@ -1,19 +1,29 @@
 import type { Metadata, Viewport } from "next";
-// import { Inter } from "next/font/google";
+import { Space_Grotesk, Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages } from 'next-intl/server';
 import { Toaster } from "@/components/ui/sonner";
+import { AppShell } from '@/components/layout/app-shell';
 
-// const inter = Inter({
-//   subsets: ["latin"],
-//   variable: "--font-inter",
-// });
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-display",
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
-  title: "MainReviews - Your Movie Review App",
-  description: "A Netflix-style movie review application with local and cloud storage",
+  title: "MainReviews — Bold Movie Reviews",
+  description: "The boldest movie review platform on the web. Track, rate, and share your cinematic journey.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
@@ -23,7 +33,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#000000",
+  themeColor: "#E60000",
 };
 
 export default async function RootLayout({
@@ -36,10 +46,12 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning>
-      <body className={`font-sans antialiased`}>
+      <body className={`${spaceGrotesk.variable} ${inter.variable} font-sans antialiased`}>
         <NextIntlClientProvider messages={messages}>
           <Providers>
-            {children}
+            <AppShell>
+              {children}
+            </AppShell>
             <Toaster />
           </Providers>
         </NextIntlClientProvider>
@@ -47,4 +59,3 @@ export default async function RootLayout({
     </html>
   );
 }
-

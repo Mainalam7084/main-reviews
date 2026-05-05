@@ -3,8 +3,9 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { BrutalButton } from '@/components/ui/brutal-button';
+import { RatingStars } from '@/components/ui/rating-stars';
 import {
     Dialog,
     DialogContent,
@@ -15,7 +16,6 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import {
     Select,
     SelectContent,
@@ -57,8 +57,6 @@ export function ReviewModal({ movie }: { movie: Movie }) {
 
             if (!isLoggedIn) {
                 // LOCAL MODE: Save to IndexedDB via Dexie
-                console.log('[ReviewModal] User not logged in - saving to local IndexedDB');
-
                 await db.reviews.add({
                     movieKey: movie.id.toString(),
                     movieSource: 'tmdb',
@@ -77,14 +75,11 @@ export function ReviewModal({ movie }: { movie: Movie }) {
                     updatedAt: new Date(),
                 });
 
-                console.log('[ReviewModal] Review saved to local IndexedDB');
                 setOpen(false);
                 router.push('/reviews'); // Redirect to My Reviews
                 router.refresh();
             } else {
                 // CLOUD MODE: Save to API
-                console.log('[ReviewModal] User logged in - saving to cloud API');
-
                 const payload = {
                     movieKey: movie.id.toString(),
                     movieSource: 'tmdb' as const,
@@ -93,49 +88,38 @@ export function ReviewModal({ movie }: { movie: Movie }) {
                     poster: movie.poster_path
                         ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
                         : undefined,
-                    genres: '[]', // JSON string as per schema
-                    actors: '[]', // JSON string as per schema
-                    ratingStars: rating, // number as per schema
+                    genres: '[]',
+                    actors: '[]',
+                    ratingStars: rating,
                     verdict: verdict,
                     reviewText: reviewText || undefined,
                     isPublic: isPublic,
                 };
 
-                console.log('[ReviewModal] Sending payload:', payload);
-
                 const res = await fetch('/api/reviews', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload),
                 });
 
                 const data = await res.json();
 
                 if (!res.ok) {
-                    // Show actual API error message
                     const errorMsg = data.message || 'Failed to create review';
-                    console.error('[ReviewModal] API error:', data);
-
-                    // If there are validation errors, show them
                     if (data.errors && Array.isArray(data.errors)) {
                         const validationErrors = data.errors
                             .map((err: any) => `${err.path.join('.')}: ${err.message}`)
                             .join(', ');
                         throw new Error(`${errorMsg} - ${validationErrors}`);
                     }
-
                     throw new Error(errorMsg);
                 }
 
-                console.log('[ReviewModal] Review saved to cloud:', data);
                 setOpen(false);
                 router.push('/reviews'); // Redirect to My Reviews
                 router.refresh();
             }
         } catch (error) {
-            console.error('[ReviewModal] Error:', error);
             const errorMessage = error instanceof Error
                 ? error.message
                 : 'Something went wrong. Please try again.';
@@ -148,95 +132,90 @@ export function ReviewModal({ movie }: { movie: Movie }) {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button size="lg" className="bg-red-600 hover:bg-red-700 text-white font-bold">
-                    Write a Review
-                </Button>
+                <BrutalButton variant="primary" size="xl">
+                    Drop a Review
+                </BrutalButton>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[425px] border-3 border-border shadow-[8px_8px_0px_0px_var(--border)] rounded-none bg-card">
                 <DialogHeader>
-                    <DialogTitle>Review {movie.title}</DialogTitle>
-                    <DialogDescription>
+                    <DialogTitle className="font-display font-800 text-2xl uppercase tracking-tighter">Review {movie.title}</DialogTitle>
+                    <DialogDescription className="font-sans text-sm font-500">
                         {status === 'authenticated'
-                            ? 'Your review will be saved to the cloud'
-                            : 'Your review will be saved locally (log in to sync to cloud)'}
+                            ? 'Your hot take is going straight to the cloud.'
+                            : 'Your take will be saved locally (log in to sync).'}
                     </DialogDescription>
                 </DialogHeader>
-                <div className="grid gap-4 py-4">
+                
+                <div className="grid gap-6 py-4">
                     {error && (
-                        <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded">
+                        <div className="bg-[#E60000] border-2 border-border text-white px-4 py-3 font-display font-700 shadow-[3px_3px_0px_0px_var(--border)]">
                             <p className="text-sm">{error}</p>
                         </div>
                     )}
 
-                    <div className="flex justify-center gap-2 mb-4">
-                        {[1, 2, 3, 4, 5].map((star) => (
-                            <button
-                                key={star}
-                                type="button"
-                                onClick={() => setRating(star)}
-                                className={`transition-colors ${rating >= star ? 'text-yellow-500' : 'text-gray-400'
-                                    }`}
-                            >
-                                <Star className="w-8 h-8 fill-current" />
-                            </button>
-                        ))}
+                    <div className="flex flex-col items-center gap-3 bg-muted border-3 border-border p-4 shadow-[4px_4px_0px_0px_var(--border)]">
+                        <Label className="font-display font-700 uppercase tracking-widest text-xs">Rating</Label>
+                        <RatingStars value={rating} onChange={setRating} size="lg" />
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor="verdict">Verdict</Label>
+                        <Label htmlFor="verdict" className="font-display font-700 uppercase tracking-wide text-sm">The Verdict</Label>
                         <Select onValueChange={setVerdict}>
-                            <SelectTrigger>
-                                <SelectValue placeholder="Select a verdict" />
+                            <SelectTrigger className="brutal-input rounded-none h-12 shadow-[3px_3px_0px_0px_var(--border)] font-display font-600">
+                                <SelectValue placeholder="What's the final word?" />
                             </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="NEVER_WATCH">🚫 Never Watch</SelectItem>
-                                <SelectItem value="WATCH">👍 Watch</SelectItem>
-                                <SelectItem value="RECOMMEND">⭐ Recommend</SelectItem>
-                                <SelectItem value="STRONGLY_RECOMMEND">🌟 Strongly Recommend</SelectItem>
-                                <SelectItem value="BEST_EVER">🏆 Best Ever</SelectItem>
+                            <SelectContent className="border-3 border-border rounded-none shadow-[6px_6px_0px_0px_var(--border)] bg-card">
+                                <SelectItem value="BEST_EVER" className="font-display font-600 focus:bg-[#FFE500] focus:text-[#0A0A0A]">🏆 Best Ever</SelectItem>
+                                <SelectItem value="STRONGLY_RECOMMEND" className="font-display font-600 focus:bg-[#E60000] focus:text-[#FFFFFF]">🌟 Strongly Recommend</SelectItem>
+                                <SelectItem value="RECOMMEND" className="font-display font-600 focus:bg-[#00F5A0] focus:text-[#0A0A0A]">⭐ Recommend</SelectItem>
+                                <SelectItem value="WATCH" className="font-display font-600 focus:bg-[#0066FF] focus:text-[#FFFFFF]">👍 Watch</SelectItem>
+                                <SelectItem value="NEVER_WATCH" className="font-display font-600 focus:bg-[#FF0000] focus:text-[#FFFFFF]">🚫 Never Watch</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor="review">Review (Optional)</Label>
-                        <Textarea
+                        <Label htmlFor="review" className="font-display font-700 uppercase tracking-wide text-sm">Your Thoughts (Optional)</Label>
+                        <textarea
                             id="review"
-                            placeholder="What did you like or dislike?"
+                            placeholder="Spill the tea..."
                             value={reviewText}
                             onChange={(e) => setReviewText(e.target.value)}
-                            className="min-h-[100px]"
+                            className="brutal-input min-h-[120px] p-3 resize-y font-sans shadow-[3px_3px_0px_0px_var(--border)]"
                         />
                     </div>
 
-                    {/* Public checkbox - only show for logged-in users */}
                     {status === 'authenticated' && (
-                        <div className="flex items-start gap-3 p-3 bg-zinc-900 rounded-md border border-zinc-800">
+                        <div className="flex items-start gap-3 p-4 bg-[#FFE500] border-3 border-border shadow-[4px_4px_0px_0px_var(--border)]">
                             <input
                                 type="checkbox"
                                 id="isPublic"
                                 checked={isPublic}
                                 onChange={(e) => setIsPublic(e.target.checked)}
-                                className="mt-1 h-4 w-4 rounded border-gray-600 bg-zinc-800 text-red-600 focus:ring-2 focus:ring-red-500 focus:ring-offset-0"
+                                className="mt-1 h-5 w-5 border-2 border-border text-[#E60000] focus:ring-0 focus:ring-offset-0 rounded-none bg-white cursor-pointer"
                             />
                             <div className="flex-1">
-                                <Label htmlFor="isPublic" className="cursor-pointer font-medium">
-                                    Make this review public
+                                <Label htmlFor="isPublic" className="cursor-pointer font-display font-800 text-[#0A0A0A] uppercase tracking-tight text-base">
+                                    Make it public
                                 </Label>
-                                <p className="text-xs text-gray-400 mt-1">
-                                    Public reviews appear on the home page and can be seen by everyone
+                                <p className="text-xs font-600 text-[#0A0A0A]/70 mt-1 leading-tight">
+                                    Let everyone see your brilliant opinion on the home page.
                                 </p>
                             </div>
                         </div>
                     )}
                 </div>
                 <DialogFooter>
-                    <Button type="submit" onClick={handleSubmit} disabled={loading || rating === 0 || !verdict}>
-                        {loading ? 'Saving...' : 'Save Review'}
-                    </Button>
+                    <BrutalButton 
+                        onClick={handleSubmit} 
+                        disabled={loading || rating === 0 || !verdict}
+                        variant="primary"
+                        className="w-full sm:w-auto"
+                    >
+                        {loading ? 'Dropping...' : 'Drop Review'}
+                    </BrutalButton>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
     );
 }
-

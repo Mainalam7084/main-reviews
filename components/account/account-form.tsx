@@ -6,19 +6,10 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { toast } from 'sonner';
-import { Loader2, Trash2, AlertTriangle } from 'lucide-react';
+import { AlertTriangle } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
+import { BrutalButton } from '@/components/ui/brutal-button';
+import { BrutalCardStatic } from '@/components/ui/brutal-card';
 import {
     Dialog,
     DialogContent,
@@ -67,14 +58,16 @@ export function AccountForm({ user }: AccountFormProps) {
                 body: JSON.stringify(data),
             });
 
-            if (!res.ok) {
-                throw new Error('Failed to update profile');
-            }
+            if (!res.ok) throw new Error('Failed to update profile');
 
-            toast.success('Profile updated successfully');
+            toast.success('Profile updated successfully', {
+                style: { border: '3px solid #0A0A0A', borderRadius: '0', boxShadow: '4px 4px 0px 0px #0A0A0A', background: '#00F5A0', color: '#0A0A0A', fontFamily: 'Space Grotesk, sans-serif', fontWeight: 'bold' }
+            });
             router.refresh();
         } catch (error) {
-            toast.error('Something went wrong. Please try again.');
+            toast.error('Something went wrong. Please try again.', {
+                style: { border: '3px solid #0A0A0A', borderRadius: '0', boxShadow: '4px 4px 0px 0px #0A0A0A', background: '#E60000', color: '#FFFFFF', fontFamily: 'Space Grotesk, sans-serif', fontWeight: 'bold' }
+            });
         } finally {
             setIsUpdating(false);
         }
@@ -85,20 +78,10 @@ export function AccountForm({ user }: AccountFormProps) {
 
         setIsDeleting(true);
         try {
-            const res = await fetch('/api/account', {
-                method: 'DELETE',
-            });
-
-            if (!res.ok) {
-                throw new Error('Failed to delete account');
-            }
+            const res = await fetch('/api/account', { method: 'DELETE' });
+            if (!res.ok) throw new Error('Failed to delete account');
 
             toast.success('Account deleted successfully');
-            // Force sign out and redirect happens via next-auth or manual reload
-            // Ideally redirect to home, and next-auth session check will handle the rest
-            // or manually sign out client side? api/account handles deletion in DB.
-            // We should probably sign out client side too.
-            // But for now, let's redirect to home which will likely refresh.
             window.location.href = '/';
         } catch (error) {
             toast.error('Failed to delete account. Please try again.');
@@ -107,119 +90,106 @@ export function AccountForm({ user }: AccountFormProps) {
     };
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-12">
             {/* Profile Settings */}
-            <Card className="border-zinc-800 bg-zinc-900 text-white">
-                <CardHeader>
-                    <CardTitle>Profile Settings</CardTitle>
-                    <CardDescription>Update your public profile information.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                        <div className="space-y-2">
-                            <Label htmlFor="email">Email</Label>
-                            <Input
-                                id="email"
-                                value={user.email || ''}
-                                disabled
-                                className="bg-zinc-950 border-zinc-700 text-gray-400 cursor-not-allowed"
-                            />
-                            <p className="text-xs text-gray-500">Email cannot be changed.</p>
-                        </div>
+            <BrutalCardStatic className="p-8 md:p-10 relative">
+                <div className="absolute -top-4 -left-4 bg-[#FFE500] border-3 border-border px-4 py-1 font-display font-800 uppercase tracking-widest shadow-[4px_4px_0px_0px_var(--border)] -rotate-2">
+                    Profile Info
+                </div>
+                
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 mt-4">
+                    <div className="space-y-2">
+                        <label htmlFor="email" className="block text-sm font-display font-800 uppercase tracking-widest text-foreground">
+                            Email
+                        </label>
+                        <input
+                            id="email"
+                            value={user.email || ''}
+                            disabled
+                            className="brutal-input block w-full p-4 text-base bg-muted text-muted-foreground cursor-not-allowed shadow-none border-dashed"
+                        />
+                        <p className="text-xs font-sans font-600 text-muted-foreground">Email cannot be changed.</p>
+                    </div>
 
-                        <div className="space-y-2">
-                            <Label htmlFor="name">Display Name</Label>
-                            <Input
-                                id="name"
-                                {...form.register('name')}
-                                className="bg-zinc-950 border-zinc-700 focus:border-red-600"
-                            />
-                            {form.formState.errors.name && (
-                                <p className="text-sm text-red-500">{form.formState.errors.name.message}</p>
-                            )}
-                        </div>
+                    <div className="space-y-2">
+                        <label htmlFor="name" className="block text-sm font-display font-800 uppercase tracking-widest text-foreground">
+                            Display Name
+                        </label>
+                        <input
+                            id="name"
+                            {...form.register('name')}
+                            className="brutal-input block w-full p-4 text-base focus:shadow-[4px_4px_0px_0px_var(--primary)]"
+                        />
+                        {form.formState.errors.name && (
+                            <p className="text-sm font-display font-700 text-[#E60000]">{form.formState.errors.name.message}</p>
+                        )}
+                    </div>
 
-                        <Button
-                            type="submit"
-                            disabled={isUpdating}
-                            className="bg-white text-black hover:bg-gray-200 font-medium"
-                        >
-                            {isUpdating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    <div className="pt-4">
+                        <BrutalButton type="submit" isLoading={isUpdating} variant="primary" size="lg">
                             Save Changes
-                        </Button>
-                    </form>
-                </CardContent>
-            </Card>
+                        </BrutalButton>
+                    </div>
+                </form>
+            </BrutalCardStatic>
 
             {/* Danger Zone */}
-            <Card className="border-red-900/50 bg-red-950/10 text-white">
-                <CardHeader>
-                    <CardTitle className="text-red-500 flex items-center gap-2">
-                        <AlertTriangle className="h-5 w-5" />
-                        Danger Zone
-                    </CardTitle>
-                    <CardDescription className="text-red-200/70">
-                        Irreversible actions. Proceed with caution.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <p className="font-medium">Delete Account</p>
-                            <p className="text-sm text-gray-400">
-                                Permanently delete your account and all associated reviews.
-                            </p>
-                        </div>
-                        <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-                            <DialogTrigger asChild>
-                                <Button variant="destructive" className="bg-red-600 hover:bg-red-700">
-                                    <Trash2 className="mr-2 h-4 w-4" />
-                                    Delete Account
-                                </Button>
-                            </DialogTrigger>
-                            <DialogContent className="bg-zinc-900 border-zinc-800 text-white">
-                                <DialogHeader>
-                                    <DialogTitle>Are you absolutely sure?</DialogTitle>
-                                    <DialogDescription className="text-gray-400">
-                                        This action cannot be undone. This will permanently delete your
-                                        account and remove your data from our servers.
-                                    </DialogDescription>
-                                </DialogHeader>
-                                <div className="py-4 space-y-4">
-                                    <Label htmlFor="confirm-delete">
-                                        Type <span className="font-bold text-red-500">DELETE</span> to confirm
-                                    </Label>
-                                    <Input
-                                        id="confirm-delete"
-                                        value={deleteConfirmation}
-                                        onChange={(e) => setDeleteConfirmation(e.target.value)}
-                                        className="bg-zinc-950 border-zinc-700"
-                                        placeholder="DELETE"
-                                    />
-                                </div>
-                                <DialogFooter>
-                                    <Button
-                                        variant="outline"
-                                        onClick={() => setIsDeleteDialogOpen(false)}
-                                        className="border-zinc-700 hover:bg-zinc-800 text-white hover:text-white"
-                                    >
-                                        Cancel
-                                    </Button>
-                                    <Button
-                                        variant="destructive"
-                                        onClick={onDeleteAccount}
-                                        disabled={deleteConfirmation !== 'DELETE' || isDeleting}
-                                        className="bg-red-600 hover:bg-red-700"
-                                    >
-                                        {isDeleting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                                        Delete Account
-                                    </Button>
-                                </DialogFooter>
-                            </DialogContent>
-                        </Dialog>
+            <BrutalCardStatic className="p-8 md:p-10 border-[#FF0000] shadow-[6px_6px_0px_0px_#FF0000] relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-2 bg-[#FF0000] strip-pattern" style={{ backgroundImage: 'repeating-linear-gradient(45deg, #FF0000, #FF0000 10px, transparent 10px, transparent 20px)' }} />
+                
+                <div className="flex items-start justify-between flex-col md:flex-row gap-6 mt-4">
+                    <div>
+                        <h3 className="font-display font-800 text-2xl uppercase tracking-tighter text-[#FF0000] flex items-center gap-2">
+                            <AlertTriangle className="h-6 w-6 stroke-[3]" /> Danger Zone
+                        </h3>
+                        <p className="text-foreground font-sans font-600 mt-2">
+                            Permanently delete your account and all associated reviews. Irreversible action.
+                        </p>
                     </div>
-                </CardContent>
-            </Card>
+                    
+                    <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+                        <DialogTrigger asChild>
+                            <BrutalButton variant="danger" size="md">
+                                Delete Account
+                            </BrutalButton>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-[425px] border-3 border-[#FF0000] shadow-[8px_8px_0px_0px_#FF0000] rounded-none bg-card">
+                            <DialogHeader>
+                                <DialogTitle className="font-display font-800 text-3xl uppercase tracking-tighter text-[#FF0000]">Are you sure?</DialogTitle>
+                                <DialogDescription className="font-sans text-sm font-600 text-foreground">
+                                    This action cannot be undone. This will permanently delete your account and wipe your data from our servers.
+                                </DialogDescription>
+                            </DialogHeader>
+                            <div className="py-6 space-y-4">
+                                <label htmlFor="confirm-delete" className="block text-sm font-display font-800 uppercase tracking-widest text-foreground">
+                                    Type <span className="text-[#FF0000] bg-[#FF0000]/10 px-1 border border-[#FF0000]">DELETE</span> to confirm
+                                </label>
+                                <input
+                                    id="confirm-delete"
+                                    value={deleteConfirmation}
+                                    onChange={(e) => setDeleteConfirmation(e.target.value)}
+                                    className="brutal-input block w-full p-4 text-base focus:shadow-[4px_4px_0px_0px_#FF0000] border-[#FF0000]"
+                                    placeholder="DELETE"
+                                />
+                            </div>
+                            <DialogFooter className="flex-col sm:flex-row gap-3">
+                                <BrutalButton variant="ghost" onClick={() => setIsDeleteDialogOpen(false)} className="w-full sm:w-auto border-muted-foreground text-muted-foreground hover:border-foreground hover:text-foreground">
+                                    Cancel
+                                </BrutalButton>
+                                <BrutalButton
+                                    variant="danger"
+                                    onClick={onDeleteAccount}
+                                    disabled={deleteConfirmation !== 'DELETE' || isDeleting}
+                                    isLoading={isDeleting}
+                                    className="w-full sm:w-auto"
+                                >
+                                    Confirm Deletion
+                                </BrutalButton>
+                            </DialogFooter>
+                        </DialogContent>
+                    </Dialog>
+                </div>
+            </BrutalCardStatic>
         </div>
     );
 }

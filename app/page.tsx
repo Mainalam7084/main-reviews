@@ -1,97 +1,104 @@
-import { Navbar } from '@/components/layout/navbar';
 import { getTrendingMovies, getImageUrl } from '@/lib/tmdb';
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
-import Image from 'next/image';
-import { Star } from 'lucide-react';
-import { RecentReviewsSection, ReviewWithUser } from '@/components/home/recent-reviews-section';
+import { RecentReviewsSection } from '@/components/home/recent-reviews-section';
+import { BrutalButton } from '@/components/ui/brutal-button';
+import { MovieCard } from '@/components/ui/movie-card';
+
+// Types
+import { ReviewWithUser } from '@/components/ui/review-card';
 
 export default async function Home() {
-  const trendingMovies = await getTrendingMovies();
+    const trendingMovies = await getTrendingMovies();
 
+    // Fetch recent public reviews
+    const recentReviews = await prisma.review.findMany({
+        where: {
+            isPublic: true,
+        },
+        take: 6, // Fetch 6 initially instead of 3 for the grid
+        orderBy: { createdAt: 'desc' },
+        include: {
+            user: {
+                select: { name: true, image: true }
+            }
+        }
+    }) as unknown as ReviewWithUser[];
 
+    return (
+        <div className="w-full">
+            {/* HERO SECTION */}
+            <section className="relative min-h-[70vh] w-full flex flex-col justify-center px-4 md:px-12 py-20 border-b-3 border-border bg-background">
+                <div className="relative z-10 max-w-5xl mx-auto w-full">
+                    <div className="space-y-4 md:space-y-6">
+                        <div className="inline-block bg-[#E60000] text-white px-4 py-1 border-2 border-[#0A0A0A] font-display font-800 uppercase tracking-widest text-sm md:text-base shadow-[3px_3px_0px_0px_#0A0A0A] animate-float">
+                            New V1.0 Release
+                        </div>
+                        <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-display font-800 tracking-tighter leading-[0.85] text-foreground uppercase">
+                            Bold Cinema.
+                            <br />
+                            <span className="text-[#E60000]">Raw Takes.</span>
+                        </h1>
+                        <p className="max-w-2xl text-xl md:text-2xl font-500 text-muted-foreground font-sans mt-8">
+                            The loudest movie platform on the web. Track what you watch, drop your reviews, and discover new favorites. No boring UI allowed.
+                        </p>
+                        <div className="flex flex-wrap gap-4 pt-8">
+                            <Link href="/movies">
+                                <BrutalButton variant="primary" size="xl">
+                                    Start Exploring
+                                </BrutalButton>
+                            </Link>
+                            <Link href="/auth/register">
+                                <BrutalButton variant="dark" size="xl">
+                                    Join the Chaos
+                                </BrutalButton>
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-  // Fetch recent public reviews
-  const recentReviews: ReviewWithUser[] = await prisma.review.findMany({
-    where: {
-      isPublic: true,
-    },
-    take: 3,
-    orderBy: { createdAt: 'desc' },
-    include: {
-      user: {
-        select: { name: true, image: true }
-      }
-    }
-  });
+            {/* TRENDING CAROUSEL */}
+            <section className="py-16 md:py-24 border-b-3 border-border bg-background overflow-hidden">
+                <div className="px-4 md:px-12 mb-8 flex items-end justify-between">
+                    <div>
+                        <h2 className="font-display font-800 text-4xl md:text-5xl uppercase tracking-tight text-foreground" style={{ textShadow: '3px 3px 0px var(--primary)' }}>
+                            Trending Now
+                        </h2>
+                        <div className="h-1.5 w-24 bg-[#0A0A0A] mt-2 dark:bg-[#F5F0E8]" />
+                    </div>
+                    <Link href="/movies">
+                        <BrutalButton variant="ghost" size="sm" className="hidden md:flex">
+                            View All →
+                        </BrutalButton>
+                    </Link>
+                </div>
 
-  return (
-    <div className="min-h-screen bg-black text-white">
-      <Navbar />
+                {/* Horizontal scroll container */}
+                <div className="w-full overflow-x-auto pb-8 pt-4 px-4 md:px-12 snap-x-mandatory scrollbar-hide">
+                    <div className="flex gap-6 w-max">
+                        {trendingMovies.slice(0, 10).map((movie, index) => (
+                            <div key={movie.id} className="w-[200px] md:w-[240px] shrink-0 snap-start">
+                                <MovieCard movie={movie} priority={index < 4} />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
 
-      <main className="relative pt-20 pb-16">
-        {/* Hero Section */}
-        <section className="relative h-[70vh] w-full overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/50 to-transparent z-10" />
+            {/* RECENT REVIEWS */}
+            <section className="py-16 md:py-24 bg-[#F5F0E8] dark:bg-[#0A0A0A]">
+                <div className="px-4 md:px-12 max-w-7xl mx-auto">
+                    <div className="mb-12">
+                        <h2 className="font-display font-800 text-4xl md:text-5xl uppercase tracking-tight text-foreground" style={{ textShadow: '3px 3px 0px var(--secondary)' }}>
+                            Latest Hot Takes
+                        </h2>
+                        <div className="h-1.5 w-24 bg-[#0A0A0A] mt-2 dark:bg-[#F5F0E8]" />
+                    </div>
 
-          <div className="relative z-20 flex h-full flex-col justify-center px-4 md:px-16">
-            <h1 className="max-w-2xl text-5xl font-bold tracking-tight md:text-7xl">
-              Track. Review. <span className="text-red-600">Share.</span>
-            </h1>
-            <div className="mt-8 flex gap-4">
-              <Link href="/movies">
-                <button className="rounded-md bg-white px-8 py-3 font-bold text-black hover:bg-gray-200 transition">
-                  Start Reviewing
-                </button>
-              </Link>
-              <Link href="/about">
-                <button className="rounded-md bg-gray-500/30 px-8 py-3 font-bold text-white backdrop-blur-sm hover:bg-gray-500/40 transition">
-                  More Info
-                </button>
-              </Link>
-            </div>
-          </div>
-
-        </section>
-
-        {/* Content Section */}
-        <div className="px-4 md:px-16 space-y-12 py-12">
-          <div>
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-2xl font-bold">Trending Now</h2>
-              <Link href="/movies" className="text-sm font-medium text-red-500 hover:text-red-400">View All</Link>
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-              {trendingMovies.slice(0, 6).map((movie) => (
-                <Link key={movie.id} href={`/movies/${movie.id}`} className="group relative block transition-transform hover:scale-105">
-                  <div className="aspect-[2/3] w-full overflow-hidden rounded-md bg-zinc-800">
-                    {movie.poster_path ? (
-                      <Image
-                        src={getImageUrl(movie.poster_path)}
-                        alt={movie.title}
-                        width={300}
-                        height={450}
-                        className="h-full w-full object-cover transition-opacity group-hover:opacity-80"
-                      />
-                    ) : (
-                      <div className="flex h-full items-center justify-center text-center p-2 text-xs text-zinc-500">
-                        No Image
-                      </div>
-                    )}
-                  </div>
-                  <div className="mt-2">
-                    <h3 className="truncate text-sm font-medium text-white">{movie.title}</h3>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          <RecentReviewsSection initialReviews={recentReviews} />
-
+                    <RecentReviewsSection initialReviews={recentReviews} />
+                </div>
+            </section>
         </div>
-      </main>
-    </div>
-  );
+    );
 }
