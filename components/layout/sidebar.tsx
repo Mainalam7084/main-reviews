@@ -109,7 +109,7 @@ export function TopBar({ onMenuOpen }: { onMenuOpen: () => void }) {
     const router = useRouter();
     const { data: session } = useSession();
     const [mounted, setMounted] = useState(false);
-    const [searchOpen, setSearchOpen] = useState(false);
+    const [searchExpanded, setSearchExpanded] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => { setMounted(true); }, []);
@@ -118,7 +118,7 @@ export function TopBar({ onMenuOpen }: { onMenuOpen: () => void }) {
         e.preventDefault();
         if (searchQuery.trim()) {
             router.push(`/search?q=${encodeURIComponent(searchQuery)}`);
-            setSearchOpen(false);
+            setSearchExpanded(false);
             setSearchQuery('');
         }
     };
@@ -128,36 +128,70 @@ export function TopBar({ onMenuOpen }: { onMenuOpen: () => void }) {
             className="fixed top-0 right-0 z-20 h-16 bg-background flex items-center justify-between px-4 lg:left-64 left-0"
             style={{ borderBottom: '3px solid var(--border)' }}
         >
-            {/* Mobile hamburger */}
+            <div className="flex items-center gap-2">
+                {/* Mobile hamburger */}
+                <button
+                    onClick={onMenuOpen}
+                    className="lg:hidden brutal-btn p-2 bg-background text-foreground shrink-0"
+                    aria-label="Open menu"
+                >
+                    <Menu size={20} />
+                </button>
+
+                {/* Back to Home Button - Physical button for mobile usability */}
+                <Link
+                    href="/"
+                    className="brutal-btn p-2 bg-[#FFE500] text-[#0A0A0A] shrink-0"
+                    aria-label="Go to home"
+                >
+                    <Home size={20} />
+                </Link>
+            </div>
+
+            {/* Mobile Search Toggle */}
             <button
-                onClick={onMenuOpen}
-                className="lg:hidden brutal-btn p-2 bg-background text-foreground"
-                aria-label="Open menu"
+                onClick={() => setSearchExpanded(true)}
+                className={`md:hidden brutal-btn p-2 bg-background text-foreground ml-2 shrink-0 ${searchExpanded ? 'hidden' : 'flex'}`}
+                aria-label="Open search"
             >
-                <Menu size={20} />
+                <Search size={20} />
             </button>
 
-            {/* Search bar */}
-            <div className="flex-1 mx-4 hidden md:block max-w-sm">
-                <form onSubmit={handleSearch} className="relative">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
-                    <input
-                        type="search"
-                        placeholder="Search movies..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="brutal-input w-full pl-9 pr-4 py-2 text-sm bg-background text-foreground placeholder:text-muted-foreground"
-                    />
+            {/* Search bar - Desktop and Expanded Mobile */}
+            <div className={`
+                ${searchExpanded ? 'absolute inset-x-0 inset-y-0 z-30 flex items-center px-4 bg-background' : 'hidden md:flex md:flex-1 md:mx-4 md:max-w-sm'}
+            `}>
+                <form onSubmit={handleSearch} className="relative w-full flex items-center gap-2">
+                    <div className="relative flex-1">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
+                        <input
+                            type="search"
+                            placeholder="Search movies..."
+                            autoFocus={searchExpanded}
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="brutal-input w-full pl-9 pr-4 py-2 text-sm bg-background text-foreground placeholder:text-muted-foreground"
+                        />
+                    </div>
+                    {searchExpanded && (
+                        <button
+                            type="button"
+                            onClick={() => setSearchExpanded(false)}
+                            className="brutal-btn p-2 bg-background text-foreground shrink-0"
+                            aria-label="Close search"
+                        >
+                            <X size={20} />
+                        </button>
+                    )}
                 </form>
             </div>
 
-            <div className="flex items-center gap-2 ml-auto">
-
+            <div className={`flex items-center gap-2 ml-auto ${searchExpanded ? 'hidden' : 'flex'}`}>
                 {/* Theme toggle */}
                 {mounted && (
                     <button
                         onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                        className="brutal-btn p-2 bg-background text-foreground"
+                        className="brutal-btn p-2 bg-background text-foreground shrink-0"
                         aria-label="Toggle theme"
                     >
                         <motion.div
@@ -175,14 +209,14 @@ export function TopBar({ onMenuOpen }: { onMenuOpen: () => void }) {
                 {session ? (
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <button className="brutal-btn p-0.5 bg-background flex items-center gap-2 px-2">
+                            <button className="brutal-btn p-0.5 bg-background flex items-center gap-2 px-2 shrink-0">
                                 <Avatar className="h-7 w-7" style={{ border: '2px solid var(--border)' }}>
                                     <AvatarImage src={session.user?.image || ''} alt={session.user?.name || ''} />
                                     <AvatarFallback className="bg-[#E60000] text-white text-xs font-display font-700">
                                         {session.user?.name?.[0]?.toUpperCase() || 'U'}
                                     </AvatarFallback>
                                 </Avatar>
-                                <ChevronDown size={14} />
+                                <ChevronDown size={14} className="hidden sm:block" />
                             </button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="w-52 brutal-card p-0" align="end">
@@ -204,9 +238,10 @@ export function TopBar({ onMenuOpen }: { onMenuOpen: () => void }) {
                 ) : (
                     <Link
                         href="/auth/login"
-                        className="brutal-btn px-4 py-2 text-sm font-display font-700 bg-[#E60000] text-white border-border"
+                        className="brutal-btn px-4 py-2 text-sm font-display font-700 bg-[#E60000] text-white border-border shrink-0"
                     >
-                        Sign In
+                        <span className="hidden xs:inline">Sign In</span>
+                        <User size={18} className="xs:hidden" />
                     </Link>
                 )}
             </div>
