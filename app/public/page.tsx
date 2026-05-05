@@ -31,11 +31,11 @@ interface PublicReviewsResponse {
 }
 
 const verdictLabels: Record<string, string> = {
-    NEVER_WATCH: '🚫 Never Watch',
-    WATCH: '👀 Watch',
-    RECOMMEND: '👍 Recommend',
-    STRONGLY_RECOMMEND: '🔥 Strongly Recommend',
-    BEST_EVER: '⭐ Best Ever',
+    NEVER_WATCH: 'Never Watch',
+    WATCH: 'Watch',
+    RECOMMEND: 'Recommend',
+    STRONGLY_RECOMMEND: 'Strongly Recommend',
+    BEST_EVER: 'Best Ever',
 };
 
 export default function PublicReviewsPage() {

@@ -13,9 +13,6 @@ export default async function ReviewsPage() {
         return (
             <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
                 <div className="bg-card border-3 border-border shadow-[8px_8px_0px_0px_var(--border)] max-w-lg w-full p-8 md:p-12 text-center">
-                    <div className="w-16 h-16 bg-[#FFE500] border-2 border-border flex items-center justify-center mx-auto mb-6 text-3xl shadow-[4px_4px_0px_0px_var(--border)] rotate-3">
-                        🔒
-                    </div>
                     <h1 className="text-3xl md:text-4xl font-display font-800 uppercase tracking-tighter mb-4 text-foreground">
                         Lockout
                     </h1>
@@ -71,9 +68,6 @@ export default async function ReviewsPage() {
             <main className="container mx-auto px-4 md:px-12 py-12 md:py-16">
                 {reviews.length === 0 ? (
                     <div className="text-center py-20 md:py-32 bg-card border-3 border-border shadow-[6px_6px_0px_0px_var(--border)] max-w-2xl mx-auto">
-                        <div className="text-5xl mb-6 grayscale hover:grayscale-0 transition-all duration-300 transform hover:scale-110 inline-block">
-                            🍿
-                        </div>
                         <h2 className="text-3xl font-display font-800 uppercase tracking-tight mb-4">Nothing here yet</h2>
                         <p className="text-muted-foreground font-sans text-lg mb-8 max-w-md mx-auto">
                             Your diary is empty. Time to watch a movie and drop your first review.
@@ -87,11 +81,11 @@ export default async function ReviewsPage() {
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 auto-rows-max">
                         {mappedReviews.map((review, i) => (
-                            <div key={review.id} 
-                                 className="h-full"
-                                 style={{ 
-                                     transform: `translateY(${i % 3 === 1 ? '1rem' : i % 3 === 2 ? '2rem' : '0'})` 
-                                 }}>
+                            <div key={review.id}
+                                className="h-full"
+                                style={{
+                                    transform: `translateY(${i % 3 === 1 ? '1rem' : i % 3 === 2 ? '2rem' : '0'})`
+                                }}>
                                 <ReviewCard review={review} showUser={false} />
                             </div>
                         ))}

@@ -145,7 +145,7 @@ export function ReviewModal({ movie }: { movie: Movie }) {
                             : 'Your take will be saved locally (log in to sync).'}
                     </DialogDescription>
                 </DialogHeader>
-                
+
                 <div className="grid gap-6 py-4">
                     {error && (
                         <div className="bg-[#E60000] border-2 border-border text-white px-4 py-3 font-display font-700 shadow-[3px_3px_0px_0px_var(--border)]">
@@ -165,11 +165,11 @@ export function ReviewModal({ movie }: { movie: Movie }) {
                                 <SelectValue placeholder="What's the final word?" />
                             </SelectTrigger>
                             <SelectContent className="border-3 border-border rounded-none shadow-[6px_6px_0px_0px_var(--border)] bg-card">
-                                <SelectItem value="BEST_EVER" className="font-display font-600 focus:bg-[#FFE500] focus:text-[#0A0A0A]">🏆 Best Ever</SelectItem>
-                                <SelectItem value="STRONGLY_RECOMMEND" className="font-display font-600 focus:bg-[#E60000] focus:text-[#FFFFFF]">🌟 Strongly Recommend</SelectItem>
-                                <SelectItem value="RECOMMEND" className="font-display font-600 focus:bg-[#00F5A0] focus:text-[#0A0A0A]">⭐ Recommend</SelectItem>
-                                <SelectItem value="WATCH" className="font-display font-600 focus:bg-[#0066FF] focus:text-[#FFFFFF]">👍 Watch</SelectItem>
-                                <SelectItem value="NEVER_WATCH" className="font-display font-600 focus:bg-[#FF0000] focus:text-[#FFFFFF]">🚫 Never Watch</SelectItem>
+                                <SelectItem value="BEST_EVER" className="font-display font-600 focus:bg-[#FFE500] focus:text-[#0A0A0A]">Best Ever</SelectItem>
+                                <SelectItem value="STRONGLY_RECOMMEND" className="font-display font-600 focus:bg-[#E60000] focus:text-[#FFFFFF]">Strongly Recommend</SelectItem>
+                                <SelectItem value="RECOMMEND" className="font-display font-600 focus:bg-[#00F5A0] focus:text-[#0A0A0A]">Recommend</SelectItem>
+                                <SelectItem value="WATCH" className="font-display font-600 focus:bg-[#0066FF] focus:text-[#FFFFFF]">Watch</SelectItem>
+                                <SelectItem value="NEVER_WATCH" className="font-display font-600 focus:bg-[#FF0000] focus:text-[#FFFFFF]">Never Watch</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
@@ -206,8 +206,8 @@ export function ReviewModal({ movie }: { movie: Movie }) {
                     )}
                 </div>
                 <DialogFooter>
-                    <BrutalButton 
-                        onClick={handleSubmit} 
+                    <BrutalButton
+                        onClick={handleSubmit}
                         disabled={loading || rating === 0 || !verdict}
                         variant="primary"
                         className="w-full sm:w-auto"

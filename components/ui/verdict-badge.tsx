@@ -11,38 +11,38 @@ interface VerdictBadgeProps {
 const verdictConfig: Record<string, { label: string; emoji: string; bg: string; text: string; border: string }> = {
     NEVER_WATCH: {
         label: 'Never Watch',
-        emoji: '🚫',
+        emoji: '',
         bg: '#FF0000',
         text: '#FFFFFF',
-        border: '#CC0000',
+        border: '#0A0A0A',
     },
     WATCH: {
         label: 'Watch',
-        emoji: '👍',
+        emoji: '',
         bg: '#0066FF',
         text: '#FFFFFF',
-        border: '#0044BB',
+        border: '#0A0A0A',
     },
     RECOMMEND: {
         label: 'Recommend',
-        emoji: '⭐',
+        emoji: '',
         bg: '#00F5A0',
         text: '#0A0A0A',
-        border: '#00CC84',
+        border: '#0A0A0A',
     },
     STRONGLY_RECOMMEND: {
         label: 'Strongly Recommend',
-        emoji: '🌟',
+        emoji: '',
         bg: '#E60000',
         text: '#FFFFFF',
-        border: '#CC2D00',
+        border: '#0A0A0A',
     },
     BEST_EVER: {
         label: 'Best Ever',
-        emoji: '🏆',
+        emoji: '',
         bg: '#FFE500',
         text: '#0A0A0A',
-        border: '#CCBB00',
+        border: '#0A0A0A',
     },
 };
 
