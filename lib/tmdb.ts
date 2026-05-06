@@ -64,6 +64,20 @@ export const getUpcomingMovies = async (): Promise<Movie[]> => {
     return data.results;
 };
 
+export const getNowPlayingMovies = async (): Promise<Movie[]> => {
+    const res = await fetch(
+        `${TMDB_BASE_URL}/movie/now_playing?api_key=${env.TMDB_API_KEY}&page=1`
+    );
+    if (!res.ok) throw new Error('Failed to fetch now playing movies');
+    const data: TmdbSearchResponse = await res.json();
+    return data.results;
+};
+
+export const getBackdropUrl = (path: string | null, size: 'w780' | 'w1280' | 'original' = 'w1280') => {
+    if (!path) return null;
+    return `https://image.tmdb.org/t/p/${size}${path}`;
+};
+
 export const getMoviesByCountry = async (countryCode: string): Promise<Movie[]> => {
     const res = await fetch(
         `${TMDB_BASE_URL}/discover/movie?api_key=${env.TMDB_API_KEY}&with_origin_country=${countryCode}&sort_by=popularity.desc`

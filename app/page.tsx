@@ -1,92 +1,75 @@
-import { getTrendingMovies, getImageUrl } from '@/lib/tmdb';
+import { getTrendingMovies, getUpcomingMovies, getNowPlayingMovies } from '@/lib/tmdb';
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import { RecentReviewsSection } from '@/components/home/recent-reviews-section';
+import { TrendingShowcase } from '@/components/home/trending-showcase';
+import { ScrollRow } from '@/components/ui/scroll-row';
 import { BrutalButton } from '@/components/ui/brutal-button';
-import { MovieCard } from '@/components/ui/movie-card';
-
-// Types
 import { ReviewWithUser } from '@/components/ui/review-card';
 
 export default async function Home() {
-    const trendingMovies = await getTrendingMovies();
+    const [trendingMovies, nowPlayingMovies, upcomingMovies] = await Promise.all([
+        getTrendingMovies(),
+        getNowPlayingMovies(),
+        getUpcomingMovies(),
+    ]);
 
-    // Fetch recent public reviews
     const recentReviews = await prisma.review.findMany({
-        where: {
-            isPublic: true,
-        },
-        take: 6, // Fetch 6 initially instead of 3 for the grid
+        where: { isPublic: true },
+        take: 6,
         orderBy: { createdAt: 'desc' },
         include: {
-            user: {
-                select: { name: true, image: true }
-            }
-        }
+            user: { select: { name: true, image: true } },
+        },
     }) as unknown as ReviewWithUser[];
 
     return (
         <div className="w-full">
-            {/* HERO SECTION */}
-            <section className="relative min-h-[50vh] w-full flex flex-col justify-center py-12 md:py-16 border-b-3 border-border bg-background">
-                <div className="relative z-10 max-w-5xl mx-auto w-full">
-                    <div className="space-y-4 md:space-y-6">
-                        <div className="inline-block bg-[#E60000] text-white px-4 py-1 border-2 border-[#0A0A0A] font-display font-800 uppercase tracking-widest text-sm md:text-base shadow-[3px_3px_0px_0px_#0A0A0A] animate-float">
-                            New V1.0 Release
-                        </div>
-                        <h1>
-                            <span className="text-[#E60000] font-bold text-6xl md:text-8xl lg:text-[10rem] uppercase">Raw <span className="text-foreground">Takes!</span></span>
-                        </h1>
-                        <p className="max-w-2xl text-xl md:text-2xl font-500 text-muted-foreground font-sans mt-8">
-                            The loudest movie platform on the web. Track what you watch, drop your reviews, and discover new favorites. No boring UI allowed.
-                        </p>
-                        <div className="flex flex-wrap gap-4 pt-8">
-                            <Link href="/movies">
-                                <BrutalButton variant="primary" size="xl">
-                                    Start Exploring
-                                </BrutalButton>
-                            </Link>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            {/* TOP 10 TRENDING SHOWCASE */}
+            <TrendingShowcase movies={trendingMovies} />
 
-            {/* TRENDING CAROUSEL */}
-            <section className="py-16 md:py-24 border-b-3 border-border bg-background overflow-hidden">
-                <div className="mb-8 flex items-end justify-between">
-                    <div>
-                        <h2 className="font-display font-800 text-4xl md:text-5xl uppercase tracking-tight text-foreground" style={{ textShadow: '3px 3px 0px var(--primary)' }}>
-                            Trending Now
-                        </h2>
-                        <div className="h-1.5 w-24 bg-[#0A0A0A] mt-2 dark:bg-[#F5F0E8]" />
-                    </div>
-                    <Link href="/movies">
-                        <BrutalButton variant="ghost" size="sm" className="hidden md:flex">
-                            View All →
-                        </BrutalButton>
-                    </Link>
-                </div>
+            {/* TRENDING ROW */}
+            <ScrollRow
+                title="Trending Now"
+                movies={trendingMovies}
+                viewAllHref="/movies/category/trending"
+                accentColor="#E60000"
+            />
 
-                {/* Horizontal scroll container */}
-                <div className="w-full overflow-x-auto pb-8 pt-4 snap-x-mandatory scrollbar-hide">
-                    <div className="flex gap-6 w-max after:w-1 md:after:w-6 after:shrink-0">
-                        {trendingMovies.slice(0, 10).map((movie, index) => (
-                            <div key={movie.id} className="w-[200px] md:w-[240px] shrink-0 snap-start">
-                                <MovieCard movie={movie} priority={index < 4} />
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
+            {/* NOW PLAYING ROW */}
+            <ScrollRow
+                title="Now Playing"
+                movies={nowPlayingMovies}
+                viewAllHref="/movies/category/now-playing"
+                accentColor="#FFE500"
+            />
+
+            {/* UPCOMING ROW */}
+            <ScrollRow
+                title="Coming Soon"
+                movies={upcomingMovies}
+                viewAllHref="/movies/category/upcoming"
+                accentColor="#00F5A0"
+            />
 
             {/* RECENT REVIEWS */}
             <section className="py-16 md:py-24 bg-[#F5F0E8] dark:bg-[#0A0A0A]">
-                <div className="max-w-7xl mx-auto">
-                    <div className="mb-12">
-                        <h2 className="font-display font-800 text-4xl md:text-5xl uppercase tracking-tight text-foreground" style={{ textShadow: '3px 3px 0px var(--secondary)' }}>
-                            Latest Hot Takes
-                        </h2>
-                        <div className="h-1.5 w-24 bg-[#0A0A0A] mt-2 dark:bg-[#F5F0E8]" />
+                <div className="max-w-7xl mx-auto px-4 md:px-8">
+                    <div className="mb-10 flex items-end justify-between">
+                        <div>
+                            <h2
+                                className="font-display font-800 text-3xl md:text-5xl uppercase tracking-tight text-foreground"
+                                style={{ textShadow: '3px 3px 0px var(--secondary)' }}
+                            >
+                                Latest Hot Takes
+                            </h2>
+                            <div className="h-1.5 w-24 bg-[#0A0A0A] mt-2 dark:bg-[#F5F0E8]" />
+                        </div>
+                        <Link href="/public" className="hidden md:block">
+                            <BrutalButton variant="ghost" size="sm">
+                                All Reviews →
+                            </BrutalButton>
+                        </Link>
                     </div>
 
                     <RecentReviewsSection initialReviews={recentReviews} />
