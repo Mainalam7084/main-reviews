@@ -240,9 +240,6 @@ export const getMoviesByCategoryPaginated = async (slug: string, page = 1): Prom
         case 'language':
             url = `${TMDB_BASE_URL}/discover/movie?api_key=${env.TMDB_API_KEY}&with_original_language=${(config as any).value}&sort_by=popularity.desc&vote_count.gte=10&page=${page}`;
             break;
-        case 'country':
-            url = `${TMDB_BASE_URL}/discover/movie?api_key=${env.TMDB_API_KEY}&with_origin_country=${(config as any).value}&sort_by=popularity.desc&page=${page}`;
-            break;
         case 'genre-lang': {
             const v = (config as any).value as { genre: number; lang: string };
             url = `${TMDB_BASE_URL}/discover/movie?api_key=${env.TMDB_API_KEY}&with_genres=${v.genre}&with_original_language=${v.lang}&sort_by=popularity.desc&vote_count.gte=20&page=${page}`;
@@ -384,7 +381,7 @@ export const CATEGORIES = {
     'action':        { title: 'Action & Adventure',                 type: 'genre',         value: 28 },
     'comedy':        { title: 'Comedy',                             type: 'genre',         value: 35 },
     'drama':         { title: 'Drama',                              type: 'genre',         value: 18 },
-    'horror':        { title: 'Horror',                             type: 'horror',        value: 27 },
+    'horror':        { title: 'Horror',                             type: 'genre',         value: 27 },
     'thriller':      { title: 'Thriller',                           type: 'genre',         value: 53 },
     'sci-fi':        { title: 'Science Fiction',                    type: 'genre',         value: 878 },
     'romance':       { title: 'Romance',                            type: 'genre',         value: 10749 },
@@ -415,9 +412,7 @@ export const getMoviesByCategory = async (slug: string): Promise<Movie[]> => {
         case 'top-rated':     return getTopRatedMovies();
         case 'upcoming':      return getUpcomingMovies();
         case 'now-playing':   return getNowPlayingMovies();
-        case 'horror':
         case 'genre':         return getMoviesByGenre((config as any).value as number);
-        case 'country':       return getMoviesByCountry((config as any).value as string);
         case 'language':      return getMoviesByLanguage((config as any).value as string);
         case 'multi-country': return getMoviesByMultipleCountries(((config as any).value as string).split('|'));
         case 'genre-lang': {
