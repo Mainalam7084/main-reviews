@@ -100,7 +100,7 @@ const CATEGORY_TREE: TreeNode[] = [
         children: [
             { label: 'Harry Potter', href: '/collections/1241' },
             { label: 'John Wick', href: '/collections/404609' },
-            { label: 'Marvel', href: '/collections/131296' },
+            { label: 'Thor', href: '/collections/131296' },
             { label: 'Fast & Furious', href: '/collections/9485' },
         ],
     },
