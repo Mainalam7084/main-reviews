@@ -132,13 +132,13 @@ export function TVScrollRow({
                 className="flex gap-5 overflow-x-auto pb-4 px-4 md:px-8 scrollbar-hide snap-x snap-mandatory"
                 style={{ WebkitOverflowScrolling: 'touch', scrollPaddingLeft: '1rem' }}
             >
-                {displayed.map((show, index) => (
+                {displayed.map((show) => (
                     <div
                         key={show.id}
                         data-card
                         className="w-[160px] md:w-[190px] shrink-0 snap-start"
                     >
-                        <TVCard show={show} priority={index < 5} />
+                        <TVCard show={show} />
                     </div>
                 ))}
                 <div className="w-4 md:w-8 shrink-0" aria-hidden />

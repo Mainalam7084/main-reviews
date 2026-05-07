@@ -38,6 +38,7 @@ export default async function CollectionPage({ params }: PageProps) {
                         src={backdropUrl}
                         alt={collection.name}
                         fill
+                        sizes="100vw"
                         className="object-cover"
                         priority
                     />

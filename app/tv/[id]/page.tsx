@@ -41,6 +41,7 @@ export default async function TVShowPage({ params }: PageProps) {
                         src={backdropUrl}
                         alt={show.name}
                         fill
+                        sizes="100vw"
                         className="object-cover"
                         priority
                     />

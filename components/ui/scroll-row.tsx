@@ -81,13 +81,13 @@ export function ScrollRow({
                 className="flex gap-5 overflow-x-auto pb-4 px-4 md:px-8 scrollbar-hide snap-x snap-mandatory"
                 style={{ WebkitOverflowScrolling: 'touch', scrollPaddingLeft: '1rem' }}
             >
-                {displayed.map((movie, index) => (
+                {displayed.map((movie) => (
                     <div
                         key={movie.id}
                         data-card
                         className="w-[160px] md:w-[190px] shrink-0 snap-start"
                     >
-                        <MovieCard movie={movie} priority={index < 5} />
+                        <MovieCard movie={movie} />
                     </div>
                 ))}
                 {/* trailing spacer */}

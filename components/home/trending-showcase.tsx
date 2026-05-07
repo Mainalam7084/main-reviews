@@ -14,6 +14,7 @@ interface TrendingShowcaseProps {
 export function TrendingShowcase({ movies }: TrendingShowcaseProps) {
     const top10 = movies.slice(0, 10);
     const [activeIndex, setActiveIndex] = useState(0);
+    const isFirstSlide = activeIndex === 0;
     const [direction, setDirection] = useState(1);
     const [isPaused, setIsPaused] = useState(false);
 
@@ -72,7 +73,7 @@ export function TrendingShowcase({ movies }: TrendingShowcaseProps) {
                             alt={active.title}
                             fill
                             className="object-cover"
-                            priority
+                            priority={isFirstSlide}
                             sizes="100vw"
                         />
                     ) : (
@@ -194,7 +195,7 @@ export function TrendingShowcase({ movies }: TrendingShowcaseProps) {
                                                 fill
                                                 className="object-cover"
                                                 sizes="208px"
-                                                priority
+                                                priority={isFirstSlide}
                                             />
                                         </div>
                                     </Link>

@@ -74,6 +74,7 @@ export default async function MovieDetailsPage({
                             src={getBackdropUrl(movie.backdrop_path, 'original') ?? getImageUrl(movie.backdrop_path)}
                             alt={movie.title}
                             fill
+                            sizes="100vw"
                             className="object-cover opacity-50 contrast-125 saturate-125 md:scale-105"
                             priority
                         />
@@ -287,6 +288,7 @@ export default async function MovieDetailsPage({
                                             src={getImageUrl(person.profile_path)}
                                             alt={person.name}
                                             fill
+                                            sizes="(max-width: 639px) 50vw, (max-width: 767px) 33vw, (max-width: 1023px) 25vw, 15vw"
                                             className="object-cover transition-transform duration-500 group-hover:scale-110"
                                         />
                                     ) : (
