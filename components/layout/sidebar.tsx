@@ -75,10 +75,10 @@ const CATEGORY_TREE: TreeNode[] = [
         icon: Tv,
         accentColor: '#0066FF',
         children: [
-            { label: 'Drama', href: '/tv/category/drama', emoji: '🎭' },
-            { label: 'Anime', href: '/tv/category/anime', emoji: '⛩️' },
-            { label: 'Crime', href: '/tv/category/crime', emoji: '🔍' },
-            { label: 'Comedy', href: '/tv/category/comedy', emoji: '😄' },
+            { label: 'Drama', href: '/tv/category/drama' },
+            { label: 'Anime', href: '/tv/category/anime' },
+            { label: 'Crime', href: '/tv/category/crime' },
+            { label: 'Comedy', href: '/tv/category/comedy' },
         ],
     },
     {
@@ -88,8 +88,8 @@ const CATEGORY_TREE: TreeNode[] = [
         accentColor: '#00F5A0',
         href: '/people',
         children: [
-            { label: 'Popular Actors', href: '/people', emoji: '🌟' },
-            { label: 'Directors', href: '/people', emoji: '🎬' },
+            { label: 'Popular Actors', href: '/people', },
+            { label: 'Directors', href: '/people', },
         ],
     },
     {
@@ -98,10 +98,10 @@ const CATEGORY_TREE: TreeNode[] = [
         icon: Bookmark,
         accentColor: '#FFE500',
         children: [
-            { label: 'Harry Potter', href: '/collections/1241', emoji: '⚡' },
-            { label: 'John Wick', href: '/collections/404609', emoji: '🐕' },
-            { label: 'Marvel', href: '/collections/131296', emoji: '🦸' },
-            { label: 'Fast & Furious', href: '/collections/9485', emoji: '🏎️' },
+            { label: 'Harry Potter', href: '/collections/1241' },
+            { label: 'John Wick', href: '/collections/404609' },
+            { label: 'Marvel', href: '/collections/131296' },
+            { label: 'Fast & Furious', href: '/collections/9485' },
         ],
     },
 ];
