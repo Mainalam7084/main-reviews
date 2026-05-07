@@ -1,17 +1,32 @@
-import { getTrendingMovies, getUpcomingMovies, getNowPlayingMovies } from '@/lib/tmdb';
+import {
+    getTrendingMovies,
+    getUpcomingMovies,
+    getNowPlayingMovies,
+    getTrendingTV,
+    getPopularTV,
+} from '@/lib/tmdb';
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import { RecentReviewsSection } from '@/components/home/recent-reviews-section';
 import { TrendingShowcase } from '@/components/home/trending-showcase';
 import { ScrollRow } from '@/components/ui/scroll-row';
+import { TVScrollRow } from '@/components/ui/tv-scroll-row';
 import { BrutalButton } from '@/components/ui/brutal-button';
 import { ReviewWithUser } from '@/components/ui/review-card';
 
 export default async function Home() {
-    const [trendingMovies, nowPlayingMovies, upcomingMovies] = await Promise.all([
+    const [
+        trendingMovies,
+        nowPlayingMovies,
+        upcomingMovies,
+        trendingTV,
+        popularTV,
+    ] = await Promise.all([
         getTrendingMovies(),
         getNowPlayingMovies(),
         getUpcomingMovies(),
+        getTrendingTV(),
+        getPopularTV(),
     ]);
 
     const recentReviews = await prisma.review.findMany({
@@ -25,16 +40,8 @@ export default async function Home() {
 
     return (
         <div className="w-full">
-            {/* TOP 10 TRENDING SHOWCASE */}
+            {/* TOP 10 TRENDING SHOWCASE — this IS the trending section */}
             <TrendingShowcase movies={trendingMovies} />
-
-            {/* TRENDING ROW */}
-            <ScrollRow
-                title="Trending Now"
-                movies={trendingMovies}
-                viewAllHref="/movies/category/trending"
-                accentColor="#E60000"
-            />
 
             {/* NOW PLAYING ROW */}
             <ScrollRow
@@ -49,6 +56,40 @@ export default async function Home() {
                 title="Coming Soon"
                 movies={upcomingMovies}
                 viewAllHref="/movies/category/upcoming"
+                accentColor="#0066FF"
+            />
+
+            {/* TV SERIES DIVIDER */}
+            <div className="py-8 px-4 md:px-8 bg-[#0066FF] border-b-3 border-border">
+                <div className="flex items-end justify-between">
+                    <div>
+                        <h2 className="text-3xl md:text-5xl font-display font-800 text-white uppercase tracking-tighter"
+                            style={{ textShadow: '3px 3px 0px #0A0A0A' }}>
+                            TV Series
+                        </h2>
+                        <p className="font-600 text-white/70 mt-1 text-sm">Binge-worthy shows, trending now.</p>
+                    </div>
+                    <Link href="/tv">
+                        <BrutalButton variant="ghost" size="sm" className="bg-white text-[#0A0A0A] border-[#0A0A0A]">
+                            Browse All →
+                        </BrutalButton>
+                    </Link>
+                </div>
+            </div>
+
+            {/* TRENDING TV ROW */}
+            <TVScrollRow
+                title="Trending TV"
+                shows={trendingTV}
+                viewAllHref="/tv/category/trending"
+                accentColor="#0066FF"
+            />
+
+            {/* POPULAR TV ROW */}
+            <TVScrollRow
+                title="Popular Shows"
+                shows={popularTV}
+                viewAllHref="/tv/category/popular"
                 accentColor="#00F5A0"
             />
 
