@@ -453,8 +453,27 @@ export const getTVByCategory = async (slug: string): Promise<TVShow[]> => {
 // ─── Popular Collections ──────────────────────────────────────────────────────
 
 export const POPULAR_COLLECTIONS = [
-    { id: 1241,   name: 'Harry Potter',   slug: 'harry-potter' },
-    { id: 404609, name: 'John Wick',      slug: 'john-wick' },
-    { id: 131296, name: 'Marvel',         slug: 'marvel' },
-    { id: 9485,   name: 'Fast & Furious', slug: 'fast-and-furious' },
+    // Wizarding World
+    { id: 1241,   name: 'Harry Potter',            slug: 'harry-potter' },
+    { id: 435259, name: 'Fantastic Beasts',         slug: 'fantastic-beasts' },
+    // Marvel Cinematic Universe
+    { id: 86311,  name: 'The Avengers',             slug: 'avengers' },
+    { id: 131292, name: 'Iron Man',                 slug: 'iron-man' },
+    { id: 131295, name: 'Captain America',          slug: 'captain-america' },
+    { id: 131296, name: 'Thor',                     slug: 'thor' },
+    { id: 284433, name: 'Guardians of the Galaxy',  slug: 'guardians-of-the-galaxy' },
+    // Spider-Man
+    { id: 531241, name: 'Spider-Man',               slug: 'spider-man' },
+    { id: 556,    name: 'Spider-Man (Raimi)',        slug: 'spider-man-raimi' },
+    { id: 125574, name: 'The Amazing Spider-Man',   slug: 'amazing-spider-man' },
+    // James Bond
+    { id: 645,    name: 'James Bond',               slug: 'james-bond' },
+    // Middle-earth
+    { id: 119,    name: 'Lord of the Rings',        slug: 'lord-of-the-rings' },
+    { id: 121938, name: 'The Hobbit',               slug: 'the-hobbit' },
+    // Action franchises
+    { id: 9485,   name: 'Fast & Furious',           slug: 'fast-and-furious' },
+    { id: 404609, name: 'John Wick',                slug: 'john-wick' },
+    // Dinosaurs
+    { id: 328,    name: 'Jurassic Park',            slug: 'jurassic-park' },
 ] as const;
