@@ -39,17 +39,18 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String     @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?    @unique
   emailVerified DateTime?
   image         String?
   password      String?
   accounts      Account[]
   sessions      Session[]
   reviews       Review[]
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  favorites     Favorite[]
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
 }
 
 model VerificationToken {
@@ -98,4 +99,17 @@ model Review {
 
   @@index([userId])
   @@index([movieKey])
+}
+
+model Favorite {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  movieId    String
+  movieTitle String
+  poster     String?
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, movieId])
+  @@index([userId])
 }

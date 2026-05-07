@@ -16,16 +16,26 @@ export async function generateStaticParams() {
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
-    'trending': 'var(--primary)',
-    'top-rated': '#FFE500',
-    'upcoming': '#0066FF',
-    'spain': '#E60000',
-    'bollywood': '#00F5A0',
-    'tollywood': '#E60000',
-    'kollywood': '#E60000',
-    'mollywood': '#0066FF',
-    'sandalwood': '#FFE500',
-    'marathi': '#00F5A0',
+    'trending':    'var(--primary)',
+    'top-rated':   '#FFE500',
+    'upcoming':    '#0066FF',
+    'now-playing': '#00F5A0',
+    'action':      '#E60000',
+    'comedy':      '#FFE500',
+    'drama':       '#0066FF',
+    'horror':      '#0A0A0A',
+    'thriller':    '#E60000',
+    'sci-fi':      '#0066FF',
+    'romance':     '#E60000',
+    'animation':   '#00F5A0',
+    'documentary': '#FFE500',
+    'spain':       '#E60000',
+    'bollywood':   '#00F5A0',
+    'tollywood':   '#E60000',
+    'kollywood':   '#E60000',
+    'mollywood':   '#0066FF',
+    'sandalwood':  '#FFE500',
+    'marathi':     '#00F5A0',
 };
 
 export default async function CategoryPage({ params }: PageProps) {
