@@ -4,7 +4,7 @@ import { useState, useTransition } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getImageUrl, type Person } from '@/lib/tmdb';
-import { Loader2 } from 'lucide-react';
+import { Loader2, ChevronDown } from 'lucide-react';
 
 interface Props {
     initialPeople: Person[];
@@ -79,20 +79,26 @@ export function PeopleGrid({ initialPeople, initialPage, totalPages }: Props) {
             </div>
 
             {hasMore && (
-                <div className="mt-12 flex justify-center">
+                <div className="mt-12 flex flex-col items-center gap-3">
+                    <p className="text-sm text-muted-foreground font-600">
+                        Showing {people.length} people · page {page} of {totalPages}
+                    </p>
                     <button
                         onClick={loadMore}
                         disabled={isPending}
-                        className="inline-flex items-center gap-2 px-8 py-3 font-display font-700 uppercase tracking-widest text-sm border-3 border-border bg-background hover:-translate-y-0.5 hover:-translate-x-0.5 transition-transform duration-150 disabled:opacity-60 disabled:pointer-events-none"
-                        style={{ boxShadow: '5px 5px 0px 0px var(--border)' }}
+                        className="flex items-center gap-3 px-8 py-4 font-display font-800 uppercase tracking-widest text-sm border-3 border-border bg-[#FFE500] text-[#0A0A0A] transition-all hover:-translate-y-1 hover:-translate-x-1 active:translate-x-0 active:translate-y-0 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none"
+                        style={{ boxShadow: isPending ? 'none' : '5px 5px 0px 0px var(--border)' }}
                     >
                         {isPending ? (
                             <>
-                                <Loader2 size={16} className="animate-spin" />
-                                Loading...
+                                <Loader2 size={18} className="animate-spin" />
+                                Loading more...
                             </>
                         ) : (
-                            'Load More'
+                            <>
+                                <ChevronDown size={18} strokeWidth={3} />
+                                Load More
+                            </>
                         )}
                     </button>
                 </div>
