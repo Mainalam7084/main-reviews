@@ -87,10 +87,9 @@ const CATEGORY_TREE: TreeNode[] = [
         label: 'People',
         icon: Users,
         accentColor: '#00F5A0',
-        href: '/people',
         children: [
-            { label: 'Popular Actors', href: '/people', },
-            { label: 'Directors', href: '/people', },
+            { label: 'Popular Actors', href: '/people' },
+            { label: 'Directors', href: '/people/directors' },
         ],
     },
     {

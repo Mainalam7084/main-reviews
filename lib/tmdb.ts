@@ -357,6 +357,17 @@ export const getPopularPeoplePaginated = async (page = 1): Promise<PaginatedResu
     return { results: data.results, page: data.page, total_pages: data.total_pages, total_results: data.total_results };
 };
 
+export const getPopularDirectors = async (): Promise<Person[]> => {
+    const pages = await Promise.all(
+        [1, 2, 3, 4, 5].map((p) =>
+            fetch(`${TMDB_BASE_URL}/person/popular?api_key=${env.TMDB_API_KEY}&page=${p}`)
+                .then((r) => r.json())
+                .then((d) => d.results as Person[])
+        )
+    );
+    return pages.flat().filter((p) => p.known_for_department === 'Directing');
+};
+
 export const getPersonDetails = async (id: string): Promise<PersonDetail> => {
     const res = await fetch(`${TMDB_BASE_URL}/person/${id}?api_key=${env.TMDB_API_KEY}`);
     if (!res.ok) throw new Error('Failed to fetch person details');
