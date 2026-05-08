@@ -13,6 +13,7 @@ import {
     Palette, FileText, Clapperboard,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { useFavorites } from '@/components/ui/favorite-button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
     DropdownMenu,
@@ -195,6 +196,7 @@ function TreeSection({ node, onClose }: { node: TreeNode; onClose: () => void })
 
 export function Sidebar({ mobileOpen, onClose }: { mobileOpen: boolean; onClose: () => void }) {
     const pathname = usePathname();
+    const { ids: favoriteIds } = useFavorites();
 
     return (
         <>
@@ -256,8 +258,13 @@ export function Sidebar({ mobileOpen, onClose }: { mobileOpen: boolean; onClose:
                                 >
                                     <Icon size={16} strokeWidth={isActive ? 2.5 : 2} />
                                     {label}
-                                    {label === 'Favorites' && (
-                                        <span className="ml-auto w-2 h-2 rounded-full bg-[#E60000]" />
+                                    {label === 'Favorites' && favoriteIds.size > 0 && (
+                                        <span
+                                            className="ml-auto min-w-[20px] h-5 px-1 bg-[#E60000] text-white border-2 border-[#0A0A0A] font-display font-800 text-[10px] flex items-center justify-center"
+                                            style={{ boxShadow: '1px 1px 0px 0px #0A0A0A' }}
+                                        >
+                                            {favoriteIds.size}
+                                        </span>
                                     )}
                                 </Link>
                             );

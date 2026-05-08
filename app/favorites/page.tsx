@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { Heart, Trash2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BrutalButton } from '@/components/ui/brutal-button';
+import { useFavorites } from '@/components/ui/favorite-button';
 
 const LS_KEY = 'mainreviews_favorites';
 
@@ -87,6 +88,7 @@ function FavoriteCard({ item, onRemove }: { item: FavoriteItem; onRemove: (id: s
 
 export default function FavoritesPage() {
     const { data: session, status } = useSession();
+    const { remove: contextRemove } = useFavorites();
     const [favorites, setFavorites] = useState<FavoriteItem[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -128,6 +130,7 @@ export default function FavoritesPage() {
             const current: FavoriteItem[] = JSON.parse(localStorage.getItem(LS_KEY) ?? '[]');
             localStorage.setItem(LS_KEY, JSON.stringify(current.filter((f) => f.movieId !== movieId)));
         }
+        contextRemove(movieId);
         setFavorites((prev) => prev.filter((f) => f.movieId !== movieId));
     };
 

@@ -72,6 +72,10 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
     );
 }
 
+export function useFavorites() {
+    return useContext(FavoritesContext);
+}
+
 // ─── FavoriteButton ───────────────────────────────────────────────────────────
 
 interface FavoriteButtonProps {
