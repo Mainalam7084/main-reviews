@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -17,6 +17,18 @@ export function TrendingShowcase({ movies }: TrendingShowcaseProps) {
     const isFirstSlide = activeIndex === 0;
     const [direction, setDirection] = useState(1);
     const [isPaused, setIsPaused] = useState(false);
+    const sectionRef = useRef<HTMLElement>(null);
+
+    useEffect(() => {
+        const el = sectionRef.current;
+        if (!el) return;
+        const observer = new IntersectionObserver(
+            ([entry]) => { if (!entry.isIntersecting) setIsPaused(false); },
+            { threshold: 0.1 }
+        );
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, []);
 
     const goTo = useCallback((index: number, dir: number) => {
         setDirection(dir);
@@ -50,6 +62,7 @@ export function TrendingShowcase({ movies }: TrendingShowcaseProps) {
 
     return (
         <section
+            ref={sectionRef}
             className="relative w-full overflow-hidden border-b-3 border-border bg-[#0A0A0A]"
             style={{ minHeight: 'clamp(480px, 70vh, 680px)' }}
             onMouseEnter={() => setIsPaused(true)}
@@ -87,7 +100,7 @@ export function TrendingShowcase({ movies }: TrendingShowcaseProps) {
 
             {/* Content */}
             <div className="relative z-10 h-full flex items-center" style={{ minHeight: 'inherit' }}>
-                <div className="w-full px-6 md:px-12 lg:px-16 py-12">
+                <div className="w-full pl-6 pr-16 md:pl-12 md:pr-20 lg:pl-16 lg:pr-24 py-12">
                     <div className="flex items-end gap-6 lg:gap-12 max-w-6xl">
 
                         {/* Giant rank number */}
