@@ -29,14 +29,18 @@ export default async function Home() {
         getPopularTV(),
     ]);
 
-    const recentReviews = await prisma.review.findMany({
-        where: { isPublic: true },
-        take: 6,
-        orderBy: { createdAt: 'desc' },
-        include: {
-            user: { select: { name: true, image: true } },
-        },
-    }) as unknown as ReviewWithUser[];
+    const [rawRecentReviews, totalPublicReviews] = await Promise.all([
+        prisma.review.findMany({
+            where: { isPublic: true },
+            take: 9,
+            orderBy: { createdAt: 'desc' },
+            include: {
+                user: { select: { name: true, image: true } },
+            },
+        }),
+        prisma.review.count({ where: { isPublic: true } }),
+    ]);
+    const recentReviews = rawRecentReviews as unknown as ReviewWithUser[];
 
     return (
         <div className="w-full">
@@ -113,7 +117,7 @@ export default async function Home() {
                         </Link>
                     </div>
 
-                    <RecentReviewsSection initialReviews={recentReviews} />
+                    <RecentReviewsSection initialReviews={recentReviews} totalReviews={totalPublicReviews} />
                 </div>
             </section>
         </div>
