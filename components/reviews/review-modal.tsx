@@ -37,7 +37,6 @@ export function ReviewModal({ movie }: { movie: Movie }) {
     const [rating, setRating] = useState(0);
     const [verdict, setVerdict] = useState('');
     const [reviewText, setReviewText] = useState('');
-    const [isPublic, setIsPublic] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
@@ -70,7 +69,7 @@ export function ReviewModal({ movie }: { movie: Movie }) {
                     ratingStars: rating,
                     verdict: verdict as Verdict,
                     reviewText: reviewText || undefined,
-                    isPublic: isPublic,
+                    isPublic: true,
                     createdAt: new Date(),
                     updatedAt: new Date(),
                 });
@@ -93,7 +92,7 @@ export function ReviewModal({ movie }: { movie: Movie }) {
                     ratingStars: rating,
                     verdict: verdict,
                     reviewText: reviewText || undefined,
-                    isPublic: isPublic,
+                    isPublic: true,
                 };
 
                 const res = await fetch('/api/reviews', {
@@ -185,25 +184,6 @@ export function ReviewModal({ movie }: { movie: Movie }) {
                         />
                     </div>
 
-                    {status === 'authenticated' && (
-                        <div className="flex items-start gap-3 p-4 bg-[#FFE500] border-3 border-border shadow-[4px_4px_0px_0px_var(--border)]">
-                            <input
-                                type="checkbox"
-                                id="isPublic"
-                                checked={isPublic}
-                                onChange={(e) => setIsPublic(e.target.checked)}
-                                className="mt-1 h-5 w-5 border-2 border-border text-[#E60000] focus:ring-0 focus:ring-offset-0 rounded-none bg-white cursor-pointer"
-                            />
-                            <div className="flex-1">
-                                <Label htmlFor="isPublic" className="cursor-pointer font-display font-800 text-[#0A0A0A] uppercase tracking-tight text-base">
-                                    Make it public
-                                </Label>
-                                <p className="text-xs font-600 text-[#0A0A0A]/70 mt-1 leading-tight">
-                                    Let everyone see your brilliant opinion on the home page.
-                                </p>
-                            </div>
-                        </div>
-                    )}
                 </div>
                 <DialogFooter>
                     <BrutalButton

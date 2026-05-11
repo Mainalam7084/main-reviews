@@ -24,7 +24,6 @@ export interface LocalReview {
   prosText?: string;
   consText?: string;
   reviewText?: string;
-  isPublic?: boolean; // For local reviews that user wants to publish
   createdAt: Date;
   updatedAt: Date;
 }

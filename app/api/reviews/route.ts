@@ -20,7 +20,6 @@ const reviewSchema = z.object({
     prosText: z.string().optional(),
     consText: z.string().optional(),
     reviewText: z.string().optional(),
-    isPublic: z.boolean().optional().default(false),
 });
 
 // GET all reviews for logged-in user (private + public)
@@ -135,7 +134,7 @@ export async function POST(req: Request) {
                 prosText: data.prosText,
                 consText: data.consText,
                 reviewText: data.reviewText,
-                isPublic: data.isPublic || false,
+                isPublic: true,
             },
         });
 
