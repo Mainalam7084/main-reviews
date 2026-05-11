@@ -32,7 +32,7 @@ export default async function Home() {
     const [rawRecentReviews, totalPublicReviews] = await Promise.all([
         prisma.review.findMany({
             where: { isPublic: true },
-            take: 9,
+            take: 20,
             orderBy: { createdAt: 'desc' },
             include: {
                 user: { select: { name: true, image: true } },
@@ -98,27 +98,25 @@ export default async function Home() {
             />
 
             {/* RECENT REVIEWS */}
-            <section className="py-16 md:py-24 bg-[#F5F0E8] dark:bg-[#0A0A0A]">
-                <div className="max-w-7xl mx-auto px-4 md:px-8">
-                    <div className="mb-10 flex items-end justify-between">
-                        <div>
-                            <h2
-                                className="font-display font-800 text-3xl md:text-5xl uppercase tracking-tight text-foreground"
-                                style={{ textShadow: '3px 3px 0px var(--secondary)' }}
-                            >
-                                Latest Hot Takes
-                            </h2>
-                            <div className="h-1.5 w-24 bg-[#0A0A0A] mt-2 dark:bg-[#F5F0E8]" />
-                        </div>
-                        <Link href="/public" className="hidden md:block">
-                            <BrutalButton variant="ghost" size="sm">
-                                All Reviews →
-                            </BrutalButton>
-                        </Link>
+            <section className="py-16 md:py-24 bg-[#F5F0E8] dark:bg-[#0A0A0A] overflow-hidden">
+                <div className="mb-10 flex items-end justify-between px-4 md:px-8 max-w-7xl mx-auto">
+                    <div>
+                        <h2
+                            className="font-display font-800 text-3xl md:text-5xl uppercase tracking-tight text-foreground"
+                            style={{ textShadow: '3px 3px 0px var(--secondary)' }}
+                        >
+                            Latest Hot Takes
+                        </h2>
+                        <div className="h-1.5 w-24 bg-[#0A0A0A] mt-2 dark:bg-[#F5F0E8]" />
                     </div>
-
-                    <RecentReviewsSection initialReviews={recentReviews} totalReviews={totalPublicReviews} />
+                    <Link href="/public" className="hidden md:block">
+                        <BrutalButton variant="ghost" size="sm">
+                            All Reviews →
+                        </BrutalButton>
+                    </Link>
                 </div>
+
+                <RecentReviewsSection initialReviews={recentReviews} totalReviews={totalPublicReviews} />
             </section>
         </div>
     );

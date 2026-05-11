@@ -342,8 +342,38 @@
   }
 }
 
+@keyframes marquee-reverse {
+  0% {
+    transform: translateX(-50%);
+  }
+
+  100% {
+    transform: translateX(0%);
+  }
+}
+
 .animate-marquee {
   animation: marquee 20s linear infinite;
+}
+
+.animate-marquee-reviews {
+  animation: marquee 40s linear infinite;
+}
+
+.animate-marquee-reviews-reverse {
+  animation: marquee-reverse 50s linear infinite;
+}
+
+.animate-marquee-reviews.paused,
+.animate-marquee-reviews-reverse.paused {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee-reviews,
+  .animate-marquee-reviews-reverse {
+    animation: none;
+  }
 }
 
 /* Float animation */
