@@ -24,6 +24,7 @@ export interface LocalReview {
   prosText?: string;
   consText?: string;
   reviewText?: string;
+  isPublic?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

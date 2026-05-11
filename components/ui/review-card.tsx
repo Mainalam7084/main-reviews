@@ -32,10 +32,15 @@ export function ReviewCard({ review, showUser = true }: ReviewCardProps) {
         day: 'numeric'
     });
 
+    const isTV = review.movieKey.startsWith('tv_');
+    const contentHref = isTV
+        ? `/tv/${review.movieKey.slice(3)}`
+        : `/movies/${review.movieKey}`;
+
     return (
         <BrutalCardStatic className="flex flex-col h-full bg-card hover:-translate-y-1 hover:-translate-x-1 transition-transform duration-200">
             <div className="flex items-start gap-4 p-4 border-b-3 border-border bg-[#F5F0E8] dark:bg-[#1E1E1E]">
-                <Link href={`/movies/${review.movieKey}`} className="shrink-0 group">
+                <Link href={contentHref} className="shrink-0 group">
                     <div className="relative w-16 md:w-20 aspect-[2/3] bg-muted border-2 border-border shadow-[2px_2px_0px_0px_var(--border)] group-hover:shadow-[4px_4px_0px_0px_var(--primary)] group-hover:-translate-y-0.5 group-hover:-translate-x-0.5 transition-all">
                         {review.poster ? (
                             <Image
@@ -53,7 +58,7 @@ export function ReviewCard({ review, showUser = true }: ReviewCardProps) {
                     </div>
                 </Link>
                 <div className="flex-1 min-w-0">
-                    <Link href={`/movies/${review.movieKey}`} className="block group">
+                    <Link href={contentHref} className="block group">
                         <h3 className="font-display font-700 text-lg leading-tight line-clamp-2 group-hover:text-primary transition-colors">
                             {review.title}
                         </h3>

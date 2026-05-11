@@ -208,6 +208,17 @@ export const getWatchProviders = async (id: string, region = 'US'): Promise<Watc
     }
 };
 
+export const getTVWatchProviders = async (id: string, region = 'US'): Promise<WatchProviders | null> => {
+    try {
+        const res = await fetch(`${TMDB_BASE_URL}/tv/${id}/watch/providers?api_key=${env.TMDB_API_KEY}`);
+        if (!res.ok) return null;
+        const data = await res.json();
+        return data.results?.[region] ?? null;
+    } catch {
+        return null;
+    }
+};
+
 export const getCollection = async (collectionId: number): Promise<any> => {
     const res = await fetch(`${TMDB_BASE_URL}/collection/${collectionId}?api_key=${env.TMDB_API_KEY}`);
     if (!res.ok) return null;
